@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Migration of DB Schemas</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Migration of DB Schemas</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Need of DB Schema Migration
+</section>
+<section data-field="body" class="e-content">
+<section name="147e" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="46d0" id="46d0" class="graf graf--h3 graf--leading graf--title">Migration of DB Schemas</h3><p name="60ee" id="60ee" class="graf graf--p graf-after--h3"><strong class="markup--strong markup--p-strong">Need of DB Schema Migration</strong></p><ul class="postList"><li name="1b73" id="1b73" class="graf graf--li graf-after--p">When a new field is introduced in newer versions of software.</li></ul><figure name="d827" id="d827" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*YdQ21fGCZPph6YaQpvGEkQ.png" data-width="790" data-height="202" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*YdQ21fGCZPph6YaQpvGEkQ.png"></figure><ul class="postList"><li name="21e5" id="21e5" class="graf graf--li graf-after--figure">When an existing field is removed in newer versions of software.</li></ul><figure name="86c4" id="86c4" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*EaW-Rq71tc629fC3diK7xw.png" data-width="788" data-height="198" src="https://cdn-images-1.medium.com/max/800/1*EaW-Rq71tc629fC3diK7xw.png"></figure><ul class="postList"><li name="3478" id="3478" class="graf graf--li graf-after--figure">When an existing field or datatype is changed.</li></ul><figure name="9011" id="9011" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*xfKmwRmQmrkLIrFCk-OItA.png" data-width="792" data-height="197" src="https://cdn-images-1.medium.com/max/800/1*xfKmwRmQmrkLIrFCk-OItA.png"></figure><p name="f132" id="f132" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">How to achieve DB Schema Migration</strong></p><ul class="postList"><li name="2ee7" id="2ee7" class="graf graf--li graf-after--p">Maintain versions for Schema structures.</li></ul><figure name="cbab" id="cbab" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*c7TbHJ_u7Up93ckgyxND5g.png" data-width="285" data-height="207" src="https://cdn-images-1.medium.com/max/800/1*c7TbHJ_u7Up93ckgyxND5g.png"></figure><ul class="postList"><li name="6196" id="6196" class="graf graf--li graf-after--figure">Maintain version directory for each version.</li></ul><figure name="bebb" id="bebb" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*6_Ha9BExwoMZPQoTTwHXQw.png" data-width="584" data-height="278" src="https://cdn-images-1.medium.com/max/800/1*6_Ha9BExwoMZPQoTTwHXQw.png"></figure><ul class="postList"><li name="8c9f" id="8c9f" class="graf graf--li graf-after--figure">Formation of higher-level version struct should be made by extending lower-level version.</li></ul><figure name="33b8" id="33b8" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*mNNo9AnHXrS3oXRr-l7qag.png" data-width="1020" data-height="289" src="https://cdn-images-1.medium.com/max/800/1*mNNo9AnHXrS3oXRr-l7qag.png"></figure><ul class="postList"><li name="cafc" id="cafc" class="graf graf--li graf-after--figure">Development code should not directly use the versioned struct. Versioned struct should be aliased and aliased DB schema should be used all over the source code. If the versioned code is used in source code, then any change in the version will make the developer to refactor it in every used place. <br> To avoid version dependency, the aliased struct should be kept outside version directories/packages.</li></ul><figure name="c4fe" id="c4fe" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*6u_K1eRaWea8ueTkUzqxWQ.png" data-width="1096" data-height="285" src="https://cdn-images-1.medium.com/max/800/1*6u_K1eRaWea8ueTkUzqxWQ.png"></figure><ul class="postList"><li name="c5d6" id="c5d6" class="graf graf--li graf-after--figure">DB Paths also should have versioning mentioned.</li></ul><figure name="52d7" id="52d7" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*9EvaRQ44KXSPAREZt8I_Kw.png" data-width="1016" data-height="222" src="https://cdn-images-1.medium.com/max/800/1*9EvaRQ44KXSPAREZt8I_Kw.png"></figure><ul class="postList"><li name="1d41" id="1d41" class="graf graf--li graf-after--figure">Constants to mention current DB version and Previous DB version should be mentioned. This will help to choose which version to be used in DB path and which struct version to be used while doing migration.</li></ul><figure name="22f0" id="22f0" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*Ex1_g_2tLxeX7KgzmZxtzA.png" data-width="1018" data-height="423" src="https://cdn-images-1.medium.com/max/800/1*Ex1_g_2tLxeX7KgzmZxtzA.png"></figure><ul class="postList"><li name="308a" id="308a" class="graf graf--li graf-after--figure">When application (Pod/Container) comes up, check if migration is required. If migration required do the migration to new version and delete older version information.</li></ul><figure name="c94c" id="c94c" class="graf graf--figure graf-after--li graf--trailing"><img class="graf-image" data-image-id="1*S2A8N7yKziFgAdhAQdpB0g.png" data-width="936" data-height="652" src="https://cdn-images-1.medium.com/max/800/1*S2A8N7yKziFgAdhAQdpB0g.png"></figure></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/572c52c71873"><time class="dt-published" datetime="2021-09-30T08:34:52.800Z">September 30, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/migration-of-db-schemas-572c52c71873" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

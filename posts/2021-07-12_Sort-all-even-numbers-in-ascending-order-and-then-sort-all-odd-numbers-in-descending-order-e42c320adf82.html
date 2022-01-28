@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Sort all even numbers in ascending order and then sort all odd numbers in descending order</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Sort all even numbers in ascending order and then sort all odd numbers in descending order</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Use comparator and sort. While sorting implement the compare method in such way that multiply -1 with odd numbers and compare, so that odd…
+</section>
+<section data-field="body" class="e-content">
+<section name="754b" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="310b" id="310b" class="graf graf--h3 graf--leading graf--title">Sort all even numbers in ascending order and then sort all odd numbers in descending order</h3><pre name="ec3e" id="ec3e" class="graf graf--pre graf-after--h3">Input  : 1, 2, 3, 4, 5, 6, 7, 8<br>Output : 7, 5, 3, 1, 2, 4, 6, 8</pre><p name="a7b1" id="a7b1" class="graf graf--p graf-after--pre">Use <strong class="markup--strong markup--p-strong">comparator </strong>and sort. While sorting implement the <strong class="markup--strong markup--p-strong">compare </strong>method in such way that multiply -1 with odd numbers and compare, so that odd numbers will come in descending order.</p><p name="22ba" id="22ba" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Program</strong></p><pre name="0611" id="0611" class="graf graf--pre graf-after--p">import java.util.*;</pre><pre name="81c5" id="81c5" class="graf graf--pre graf-after--pre">public class OddEven {</pre><pre name="4e3d" id="4e3d" class="graf graf--pre graf-after--pre">  public static void main(String[] args){<br>    Integer[] arr = new Integer[]{1,2,3,4,5,6,7,8};<br>    List&lt;Integer&gt; al = Arrays.asList(arr);<br>    Collections.sort(al, new IntComparator());<br>    System.out.println(al);<br>  }<br>}</pre><pre name="cb22" id="cb22" class="graf graf--pre graf-after--pre graf--trailing">class IntComparator implements Comparator&lt;Integer&gt; {<br>  public int compare(Integer o1, Integer o2){<br>    int t1 = o1, t2 = o2;<br>    if (t1%2 == 1) {<br>      t1 = t1 * -1;<br>    }<br>    if (t2%2 == 1){<br>      t2 = t2 * -1;<br>    }<br>    return t1 - t2;<br>  }<br>}</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/e42c320adf82"><time class="dt-published" datetime="2021-07-12T04:30:55.522Z">July 12, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/sort-all-even-numbers-in-ascending-order-and-then-sort-all-odd-numbers-in-descending-order-e42c320adf82" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

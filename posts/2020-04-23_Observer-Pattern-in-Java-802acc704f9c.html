@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Observer Pattern in Java</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Observer Pattern in Java</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Observer Pattern is achieved mainly using 2 objects:
+</section>
+<section data-field="body" class="e-content">
+<section name="fdbe" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="a456" id="a456" class="graf graf--h3 graf--leading graf--title">Observer Pattern in Java</h3><p name="3a36" id="3a36" class="graf graf--p graf-after--h3">Observer Pattern is achieved mainly using 2 objects:</p><p name="cd28" id="cd28" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Observable </strong>: The one who is being observed. He can perform 2 operations:</p><ul class="postList"><li name="8ebb" id="8ebb" class="graf graf--li graf-after--p">Adding observers to observer list <strong class="markup--strong markup--li-strong">[</strong><em class="markup--em markup--li-em">func (o *Observable) addObserver(obs Observer)</em><strong class="markup--strong markup--li-strong">]</strong>. The observers are maintained in a local list.</li><li name="8bf4" id="8bf4" class="graf graf--li graf-after--li">Notify all observers when any field value is changed <strong class="markup--strong markup--li-strong">[</strong><em class="markup--em markup--li-em">func (o *Observable) NotifyObservers(value string)</em><strong class="markup--strong markup--li-strong">]</strong></li></ul><p name="c6fc" id="c6fc" class="graf graf--p graf-after--li"><strong class="markup--strong markup--p-strong">Observer </strong>: One who keeps monitoring other’s activities. He will have a “Update(name string)” method which gets called once the Observable guy sends notification saying “<em class="markup--em markup--p-em">Hey I have a change in my value</em>”. [<em class="markup--em markup--p-em">func (o *Observer) Update(value string)</em>]</p><p name="cf14" id="cf14" class="graf graf--p graf-after--p">Here is how the code looks like:</p><p name="5f85" id="5f85" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">File: OP.java</strong><em class="markup--em markup--p-em"><br></em><strong class="markup--strong markup--p-strong">Code</strong>:</p><pre name="87e4" id="87e4" class="graf graf--pre graf-after--p">import java.util.ArrayList;</pre><pre name="9f0f" id="9f0f" class="graf graf--pre graf-after--pre">public class OP{<br>  public static void main(String[] args){<br>    Item i = new Item(&quot;Nike Shoes&quot;);<br>    Customer c1 = new Customer(&quot;Cust 1&quot;);<br>    Customer c2 = new Customer(&quot;Cust 2&quot;);<br>    i.addObserver(c1);<br>    i.addObserver(c2);<br>    i.setVal(&quot;Adidas Shoes&quot;);<br>  }<br>}</pre><pre name="11cf" id="11cf" class="graf graf--pre graf-after--pre">class Observable {</pre><pre name="da93" id="da93" class="graf graf--pre graf-after--pre">ArrayList&lt;Observer&gt; observers;</pre><pre name="8fbd" id="8fbd" class="graf graf--pre graf-after--pre">public Observable(){<br>    observers = new ArrayList&lt;&gt;();<br>  }<br>  <br>  public void addObserver(Observer ob){<br>    observers.add(ob);<br>  }</pre><pre name="4f8c" id="4f8c" class="graf graf--pre graf-after--pre">public void notifyAll(String name){<br>    for(Observer ob: observers){<br>      ob.update(name);<br>    }<br>  }</pre><pre name="3316" id="3316" class="graf graf--pre graf-after--pre">}</pre><pre name="2c50" id="2c50" class="graf graf--pre graf-after--pre">class Item extends Observable{</pre><pre name="274e" id="274e" class="graf graf--pre graf-after--pre">String name;</pre><pre name="7335" id="7335" class="graf graf--pre graf-after--pre">public Item(String name){<br>    this.name = name;<br>  }</pre><pre name="5b5b" id="5b5b" class="graf graf--pre graf-after--pre">void setVal(String name){<br>    this.name = name;<br>    notifyAll(this.name);<br>  }<br>}</pre><pre name="bf7b" id="bf7b" class="graf graf--pre graf-after--pre">interface Observer {<br>  void update(String name);<br>}</pre><pre name="81de" id="81de" class="graf graf--pre graf-after--pre">class Customer implements Observer {</pre><pre name="b89f" id="b89f" class="graf graf--pre graf-after--pre">String name;</pre><pre name="3ccf" id="3ccf" class="graf graf--pre graf-after--pre">public Customer(String name){<br>    this.name = name;<br>  }</pre><pre name="56d4" id="56d4" class="graf graf--pre graf-after--pre"><a href="http://twitter.com/Override" data-href="http://twitter.com/Override" class="markup--anchor markup--pre-anchor" title="Twitter profile for @Override" rel="noopener" target="_blank">@Override</a><br>  public void update(String name){<br>    System.out.println(&quot;Customer : &quot;+this.name+&quot; value : &quot;+name);<br>  }<br>}<br><br></pre><p name="73b7" id="73b7" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output</strong></p><pre name="a7b7" id="a7b7" class="graf graf--pre graf-after--p">$ javac OP.java</pre><pre name="97f5" id="97f5" class="graf graf--pre graf-after--pre">$ java OP</pre><pre name="b9a6" id="b9a6" class="graf graf--pre graf-after--pre graf--trailing">Customer : Cust 1 value : Adidas Shoes<br>Customer : Cust 2 value : Adidas Shoes</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/802acc704f9c"><time class="dt-published" datetime="2020-04-23T13:53:51.912Z">April 23, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/observer-pattern-in-java-802acc704f9c" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

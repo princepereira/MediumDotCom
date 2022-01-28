@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>HAProxy as a Loadbalancer</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">HAProxy as a Loadbalancer</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+HAProxy can be used as Loadbalancer as well as Reverse Proxy. Here will be providing steps to bringup HAProxy as Loadbalancer.
+</section>
+<section data-field="body" class="e-content">
+<section name="5c5e" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="3d6e" id="3d6e" class="graf graf--h3 graf--leading graf--title">HAProxy as a Loadbalancer</h3><p name="718d" id="718d" class="graf graf--p graf-after--h3">HAProxy can be used as Loadbalancer as well as Reverse Proxy. Here will be providing steps to bringup HAProxy as Loadbalancer.</p><p name="0779" id="0779" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Environment</strong></p><p name="f8aa" id="f8aa" class="graf graf--p graf-after--p">Ubuntu 20.04 VM, Docker installed</p><figure name="9d27" id="9d27" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*r3xHXEEOptEKUC_tEwrEgQ.png" data-width="708" data-height="466" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*r3xHXEEOptEKUC_tEwrEgQ.png"></figure><p name="027e" id="027e" class="graf graf--p graf-after--figure">Following are the steps:</p><p name="1ba0" id="1ba0" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Bring up multiple web servers</strong></p><pre name="a80c" id="a80c" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Create a docker network</strong><br>sudo docker network create --driver=bridge mynetwork</pre><pre name="6a84" id="6a84" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Create Webserver 1</strong><br>sudo docker run -d --name web1 --net mynetwork jmalloc/echo-server:latest</pre><pre name="07a0" id="07a0" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Create Webserver 2<br></strong>sudo docker run -d --name web2 --net mynetwork jmalloc/echo-server:latest</pre><pre name="113d" id="113d" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Create Webserver 3<br></strong>sudo docker run -d --name web3 --net mynetwork jmalloc/echo-server:latest</pre><p name="2ae3" id="2ae3" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Ensure created web servers are running</strong></p><pre name="318a" id="318a" class="graf graf--pre graf-after--p">$ sudo docker ps | grep web</pre><pre name="3094" id="3094" class="graf graf--pre graf-after--pre">19531c683dc5   jmalloc/echo-server:latest &quot;/bin/echo-server&quot;       20 minutes ago   Up 20 minutes   8080/tcp   web3<br>d826614767d5   jmalloc/echo-server:latest &quot;/bin/echo-server&quot;       20 minutes ago   Up 20 minutes   8080/tcp   web2<br>92d151660609   jmalloc/echo-server:latest &quot;/bin/echo-server&quot;       21 minutes ago   Up 20 minutes   8080/tcp   web1</pre><p name="62b1" id="62b1" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Create a haproxy.cfg file in current directory. Content is as below</strong></p><pre name="e2e9" id="e2e9" class="graf graf--pre graf-after--p">$ <strong class="markup--strong markup--pre-strong">cat haproxy.cfg</strong> <br>global<br>  stats socket /var/run/api.sock user haproxy group haproxy mode 660 level admin expose-fd listeners<br>  log stdout format raw local0 info</pre><pre name="d7b0" id="d7b0" class="graf graf--pre graf-after--pre">defaults<br>  mode http<br>  timeout client 10s<br>  timeout connect 5s<br>  timeout server 10s<br>  timeout http-request 10s<br>  log global</pre><pre name="4ebe" id="4ebe" class="graf graf--pre graf-after--pre">frontend stats<br>  bind *:8404<br>  stats enable<br>  stats uri /<br>  stats refresh 10s</pre><pre name="194b" id="194b" class="graf graf--pre graf-after--pre">frontend myfrontend<br>  bind :80<br>  default_backend webservers</pre><pre name="a78c" id="a78c" class="graf graf--pre graf-after--pre">backend webservers<br>  server s1 web1:8080 check<br>  server s2 web2:8080 check<br>  server s3 web3:8080 check</pre><p name="b796" id="b796" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Run HAProxy in current directory</strong></p><pre name="f03a" id="f03a" class="graf graf--pre graf-after--p">sudo docker run -d \<br>   --name haproxy \<br>   --net mynetwork \<br>   -v $(pwd):/usr/local/etc/haproxy:ro \<br>   -p 80:80 \<br>   -p 8404:8404 \<br>   haproxytech/haproxy-alpine:2.4</pre><p name="3e08" id="3e08" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Check HA proxy docker is running</strong></p><pre name="ec45" id="ec45" class="graf graf--pre graf-after--p">$ <strong class="markup--strong markup--pre-strong">sudo docker ps | grep haproxy</strong></pre><pre name="a45d" id="a45d" class="graf graf--pre graf-after--pre">5a0267e53cde   haproxytech/haproxy-alpine:2.4  &quot;/docker-entrypoint.…&quot;   46 minutes ago   Up 46 minutes   0.0.0.0:80-&gt;80/tcp, :::80-&gt;80/tcp, 0.0.0.0:8404-&gt;8404/tcp, :::8404-&gt;8404/tcp   haproxy<br><br></pre><p name="c652" id="c652" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Access the following URL with port number of HAProxy (80) and the call will be redirected to Web1, Web2 and Web3 in Round robin manner on each refresh.</strong></p><pre name="3f1b" id="3f1b" class="graf graf--pre graf-after--p"><a href="http://localhost/" data-href="http://localhost/" class="markup--anchor markup--pre-anchor" target="_blank">http://localhost/</a></pre><figure name="cfd6" id="cfd6" class="graf graf--figure graf-after--pre"><img class="graf-image" data-image-id="1*IWuEGei-GKcdb3vH5rldeQ.png" data-width="1682" data-height="849" src="https://cdn-images-1.medium.com/max/800/1*IWuEGei-GKcdb3vH5rldeQ.png"></figure><p name="351d" id="351d" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">Access the HAProxy dashboard to see the metrics</strong></p><p name="af61" id="af61" class="graf graf--p graf-after--p"><a href="http://localhost:8404" data-href="http://localhost:8404" class="markup--anchor markup--p-anchor" target="_blank">http://localhost:8404</a></p><figure name="84f5" id="84f5" class="graf graf--figure graf-after--p graf--trailing"><img class="graf-image" data-image-id="1*j5rmbuzY8CfjRcbBmiO_jA.png" data-width="1929" data-height="525" src="https://cdn-images-1.medium.com/max/800/1*j5rmbuzY8CfjRcbBmiO_jA.png"></figure></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/88ef52a0f4d6"><time class="dt-published" datetime="2022-01-28T12:33:15.621Z">January 28, 2022</time></a>.</p><p><a href="https://medium.com/@princepereira/haproxy-as-a-loadbalancer-88ef52a0f4d6" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

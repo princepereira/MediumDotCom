@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Timer and Callback Functions in Golang</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Timer and Callback Functions in Golang</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Implement a timer based callback func in Golang
+</section>
+<section data-field="body" class="e-content">
+<section name="de85" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="6702" id="6702" class="graf graf--h3 graf--leading graf--title">Timer and Callback Functions in Golang</h3><p name="620c" id="620c" class="graf graf--p graf-after--h3">Implement a timer based callback func in Golang</p><p name="027d" id="027d" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Program</strong></p><pre name="dfbd" id="dfbd" class="graf graf--pre graf-after--p">package main</pre><pre name="d65e" id="d65e" class="graf graf--pre graf-after--pre">import (<br> &quot;fmt&quot;<br> &quot;sync&quot;<br> &quot;time&quot;<br>)</pre><pre name="400b" id="400b" class="graf graf--pre graf-after--pre">type timerFunc func()</pre><pre name="04d0" id="04d0" class="graf graf--pre graf-after--pre">var timers *sync.Map</pre><pre name="e2ed" id="e2ed" class="graf graf--pre graf-after--pre">func startTimer(id string, callbackFunc timerFunc, timeout int) {<br> if a, ok := timers.Load(id); ok {<br>  timer := a.(*time.Timer)<br>  timer.Stop()<br>  timers.Delete(id)<br>  // Delete from DB<br>  fmt.Println(&quot;===========  Existing Timer deleted ...&quot;, id)<br> }</pre><pre name="1a02" id="1a02" class="graf graf--pre graf-after--pre">timer := time.NewTimer(time.Duration(timeout) * time.Second)<br> fmt.Println(&quot;===========  Timer started ...&quot;, id)<br> timers.Store(id, timer)<br> // Add in DB<br> go func() {<br>  &lt;-timer.C<br>  fmt.Println(&quot;===========  Callback func calling ...&quot;, id)<br>  callbackFunc()<br>  fmt.Println(&quot;===========  Timer completed...&quot;, id)<br>  timers.Delete(id)<br> }()<br>}</pre><pre name="31d0" id="31d0" class="graf graf--pre graf-after--pre">func stopTimer(id string) {<br> if a, ok := timers.Load(id); ok {<br>  timer := a.(*time.Timer)<br>  timer.Stop()<br>  timers.Delete(id)<br>  // Delete from DB<br>  fmt.Println(&quot;===========  Timer deleted...&quot;, id)<br> }<br>}</pre><pre name="8acd" id="8acd" class="graf graf--pre graf-after--pre">func a() {<br> fmt.Println(&quot;===========  a called...&quot;)<br>}</pre><pre name="385e" id="385e" class="graf graf--pre graf-after--pre">func b() {<br> fmt.Println(&quot;===========  b called...&quot;)<br>}</pre><pre name="ebb9" id="ebb9" class="graf graf--pre graf-after--pre">func main() {<br> timers = new(sync.Map)<br> fmt.Println(&quot;===========  Execution started&quot;)<br> startTimer(&quot;id-a&quot;, a, 2)<br> startTimer(&quot;id-b&quot;, b, 4)<br> time.Sleep(8 * time.Second)<br> startTimer(&quot;id-a&quot;, a, 4)<br> startTimer(&quot;id-b&quot;, b, 4)<br> time.Sleep(2 * time.Second)<br> stopTimer(&quot;id-a&quot;)<br> time.Sleep(100 * time.Second)<br> fmt.Println(&quot;===========  Execution completed&quot;)<br>}</pre><p name="159b" id="159b" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output</strong></p><pre name="5b34" id="5b34" class="graf graf--pre graf-after--p graf--trailing">===========  Execution started<br>===========  Timer started ... id-a<br>===========  Timer started ... id-b<br>===========  Callback func calling ... id-a<br>===========  a called...<br>===========  Timer completed... id-a<br>===========  Callback func calling ... id-b<br>===========  b called...<br>===========  Timer completed... id-b<br>===========  Timer started ... id-a<br>===========  Timer started ... id-b<br>===========  Timer deleted... id-a<br>===========  Callback func calling ... id-b<br>===========  b called...<br>===========  Timer completed... id-b<br>===========  Execution completed</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/f7cff096534a"><time class="dt-published" datetime="2021-05-19T13:33:20.620Z">May 19, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/timer-and-callback-functions-in-golang-f7cff096534a" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

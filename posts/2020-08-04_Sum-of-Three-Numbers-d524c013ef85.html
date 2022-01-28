@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Sum of Three Numbers</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Sum of Three Numbers</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+How to find triplets with sum ‘0’ in an array ?
+</section>
+<section data-field="body" class="e-content">
+<section name="680b" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="8e22" id="8e22" class="graf graf--h3 graf--leading graf--title">Sum of Three Numbers</h3><p name="2dc3" id="2dc3" class="graf graf--p graf-after--h3">How to find triplets with sum ‘0’ in an array ?</p><ol class="postList"><li name="6bba" id="6bba" class="graf graf--li graf-after--p">Given array</li></ol><figure name="7834" id="7834" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*6DqIe-rogdISwFZr_iCnHA.jpeg" data-width="536" data-height="78" src="https://cdn-images-1.medium.com/max/800/1*6DqIe-rogdISwFZr_iCnHA.jpeg"></figure><p name="2c24" id="2c24" class="graf graf--p graf-after--figure">2. Sort the array</p><figure name="3c84" id="3c84" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*9egs9DWN4W7uJTbyN9s3dQ.jpeg" data-width="535" data-height="72" src="https://cdn-images-1.medium.com/max/800/1*9egs9DWN4W7uJTbyN9s3dQ.jpeg"></figure><p name="fcfa" id="fcfa" class="graf graf--p graf-after--figure">3. Choose a current node, left pointer and a right pointer. Current node is first element of the sorted array, left pointer is the left most index after current node and right pointer is the right most element of the array.</p><figure name="961d" id="961d" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*PAnf1skFgOTxIVydIgaxKA.jpeg" data-width="543" data-height="271" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*PAnf1skFgOTxIVydIgaxKA.jpeg"></figure><p name="51c9" id="51c9" class="graf graf--p graf-after--figure">4. Find the sum of 3 node values :</p><p name="f9de" id="f9de" class="graf graf--p graf-after--p">Formula is :</p><p name="ab09" id="ab09" class="graf graf--p graf-after--p">sum = arr[curNode] + arr[lPtr] + arr[rPtr]</p><p name="69df" id="69df" class="graf graf--p graf-after--p">4.1. if the sum == 0 → consider the value for the triplet and proceed for the next triplet by incrementing lPtr and decrementing right pointer.</p><p name="7eec" id="7eec" class="graf graf--p graf-after--p">[lPtr++, rPtr — ]</p><p name="bc8a" id="bc8a" class="graf graf--p graf-after--p">4.2. if the sum &lt; 0 → increment the lPtr [lPtr++]</p><p name="d5f1" id="d5f1" class="graf graf--p graf-after--p">4.3. if the sum &gt; 0 → decrement the rPtr [rPtr — ]</p><figure name="e22d" id="e22d" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*f1uSUJhywZI4yObehhrtUA.jpeg" data-width="541" data-height="282" src="https://cdn-images-1.medium.com/max/800/1*f1uSUJhywZI4yObehhrtUA.jpeg"><figcaption class="imageCaption">Point 4.2 [ sum == -2 &lt; 0, so <strong class="markup--strong markup--figure-strong">lPtr </strong>incremented]</figcaption></figure><figure name="d1ca" id="d1ca" class="graf graf--figure graf-after--figure"><img class="graf-image" data-image-id="1*rjp8mIhsFL_20hJ0YDeJeA.jpeg" data-width="552" data-height="265" src="https://cdn-images-1.medium.com/max/800/1*rjp8mIhsFL_20hJ0YDeJeA.jpeg"><figcaption class="imageCaption">Point 4.3 [ sum == 1 &gt; 0, so <strong class="markup--strong markup--figure-strong">rPtr </strong>decremented]</figcaption></figure><figure name="6ed2" id="6ed2" class="graf graf--figure graf-after--figure"><img class="graf-image" data-image-id="1*BUKsgr_BbFfCHsdAPF_4pg.jpeg" data-width="547" data-height="291" src="https://cdn-images-1.medium.com/max/800/1*BUKsgr_BbFfCHsdAPF_4pg.jpeg"><figcaption class="imageCaption">Point 4.1 [sum == 0, triplet accepted, <strong class="markup--strong markup--figure-strong">lPtr++</strong>, <strong class="markup--strong markup--figure-strong">rPtr —</strong> ]</figcaption></figure><figure name="1e2e" id="1e2e" class="graf graf--figure graf-after--figure"><img class="graf-image" data-image-id="1*BYr8fANtgSmTISHqVYRrjw.jpeg" data-width="537" data-height="284" src="https://cdn-images-1.medium.com/max/800/1*BYr8fANtgSmTISHqVYRrjw.jpeg"><figcaption class="imageCaption">Looking for the next set of triplets</figcaption></figure><figure name="9f27" id="9f27" class="graf graf--figure graf-after--figure"><img class="graf-image" data-image-id="1*4FIZ_w86wpjewXUYwhxjLA.jpeg" data-width="546" data-height="301" src="https://cdn-images-1.medium.com/max/800/1*4FIZ_w86wpjewXUYwhxjLA.jpeg"><figcaption class="imageCaption">Current Node incremented and looking for the next set of triplets with current node changed.</figcaption></figure><p name="2678" id="2678" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">Program</strong>:</p><p name="b5b8" id="b5b8" class="graf graf--p graf-after--p">File: ThreeNumberSum.java</p><pre name="677c" id="677c" class="graf graf--pre graf-after--p">import java.util.*;</pre><pre name="3932" id="3932" class="graf graf--pre graf-after--pre">public class ThreeNumberSum {</pre><pre name="a0e0" id="a0e0" class="graf graf--pre graf-after--pre">   public static void main(String[] args){<br>       int[] arr = {12, 1, 3, 2, -6, 5, -8, 6};<br>       Arrays.sort(arr);<br>       System.out.println(Arrays.toString(arr));<br>       ThreeNumberSum obj = new ThreeNumberSum();<br>       ArrayList&lt;int[]&gt; triplets = obj.getTripletsForSum0(arr);<br>       for(int[] val : triplets){<br>          System.out.println(Arrays.toString(val));<br>       }<br>  }</pre><pre name="9ee1" id="9ee1" class="graf graf--pre graf-after--pre">  ArrayList&lt;int[]&gt; getTripletsForSum0(int[] arr){</pre><pre name="2a99" id="2a99" class="graf graf--pre graf-after--pre">      ArrayList&lt;int[]&gt; arrList = new ArrayList&lt;&gt;();</pre><pre name="bcad" id="bcad" class="graf graf--pre graf-after--pre">      int lPtr = 0, rPtr = 0, sum = 0;<br>      for(int i = 0; i &lt; arr.length - 3; i++){<br>         for(lPtr = i + 1, rPtr = arr.length - 1; lPtr &lt; rPtr; ){<br>            sum = arr[i] + arr[lPtr] + arr[rPtr];<br>            if(sum == 0){<br>               int[] triplet = {arr[i], arr[lPtr], arr[rPtr]};<br>               arrList.add(triplet);<br>               lPtr++; rPtr--;<br>            } else if(sum &lt; 0){<br>               lPtr++;<br>            } else {<br>               rPtr--;<br>            }<br>         }<br>      }</pre><pre name="3b3b" id="3b3b" class="graf graf--pre graf-after--pre">      return arrList;<br>   }<br>}</pre><p name="7809" id="7809" class="graf graf--p graf-after--pre">Output:</p><pre name="9a2c" id="9a2c" class="graf graf--pre graf-after--p">$ javac ThreeNumberSum.java</pre><pre name="7009" id="7009" class="graf graf--pre graf-after--pre">$ java ThreeNumberSum</pre><pre name="cc81" id="cc81" class="graf graf--pre graf-after--pre">[-8, -6, 1, 2, 3, 5, 6, 12]</pre><pre name="47ef" id="47ef" class="graf graf--pre graf-after--pre">[-8, 2, 6]<br>[-8, 3, 5]<br>[-6, 1, 5]<br><br></pre><p name="f73c" id="f73c" class="graf graf--p graf-after--pre graf--trailing">Time Complexity : O(n²)<br>Space Complexity : O(n)</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/d524c013ef85"><time class="dt-published" datetime="2020-08-04T09:20:30.995Z">August 4, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/sum-of-three-numbers-d524c013ef85" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

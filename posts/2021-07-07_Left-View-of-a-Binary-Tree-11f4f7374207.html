@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Left View of a Binary Tree</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Left View of a Binary Tree</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Use level order traversal for this.
+</section>
+<section data-field="body" class="e-content">
+<section name="ef41" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="7ad5" id="7ad5" class="graf graf--h3 graf--leading graf--title">Left View of a Binary Tree</h3><figure name="956f" id="956f" class="graf graf--figure graf-after--h3"><img class="graf-image" data-image-id="1*eENq0Xd96m60ffGJZ_O8ow.png" data-width="1303" data-height="595" src="https://cdn-images-1.medium.com/max/800/1*eENq0Xd96m60ffGJZ_O8ow.png"></figure><p name="74df" id="74df" class="graf graf--p graf-after--figure">Use level order traversal for this.</p><p name="c2e4" id="c2e4" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Program in Golang</strong></p><pre name="f60e" id="f60e" class="graf graf--pre graf-after--p">package main</pre><pre name="2574" id="2574" class="graf graf--pre graf-after--pre">import (<br> &quot;fmt&quot;<br>)</pre><pre name="bf52" id="bf52" class="graf graf--pre graf-after--pre">type node struct {<br> data  int<br> left  *node<br> right *node<br>}</pre><pre name="af84" id="af84" class="graf graf--pre graf-after--pre">func newNode(data int) *node {<br> n := new(node)<br> n.data = data<br> return n<br>}</pre><pre name="def6" id="def6" class="graf graf--pre graf-after--pre">func leftTreeView(n *node) {<br> var q []*node</pre><pre name="e49c" id="e49c" class="graf graf--pre graf-after--pre"> q = append(q, n)</pre><pre name="5393" id="5393" class="graf graf--pre graf-after--pre"> for len(q) &gt; 0 {<br>   qSize := len(q)</pre><pre name="b133" id="b133" class="graf graf--pre graf-after--pre">   for i := 0; i &lt; qSize; i++ {<br>     t := q[0]<br>     if i == 0 {<br>       fmt.Print(t.data, &quot; &quot;)<br>     }<br>     q = q[1:]<br>     if t.left != nil {<br>       q = append(q, t.left)<br>     }<br>     if t.right != nil {<br>       q = append(q, t.right)<br>     }<br>   }<br> }</pre><pre name="f924" id="f924" class="graf graf--pre graf-after--pre"> fmt.Println()<br>}</pre><pre name="8fe4" id="8fe4" class="graf graf--pre graf-after--pre">func main() {<br> fmt.Println(&quot;Left view of the binary tree is :&quot;)<br> root := newNode(1)<br> root.left = newNode(2)<br> root.right = newNode(6)<br> root.left.right = newNode(3)<br> root.right.right = newNode(7)<br> root.right.right.left = newNode(4)<br> root.right.right.right = newNode(8)<br> root.right.right.left.left = newNode(5)<br> leftTreeView(root)<br>}</pre><p name="8194" id="8194" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output :</strong></p><pre name="453b" id="453b" class="graf graf--pre graf-after--p graf--trailing">Left view of the binary tree is :<br>1 2 3 4 5</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/11f4f7374207"><time class="dt-published" datetime="2021-07-07T04:08:18.924Z">July 7, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/left-view-of-a-binary-tree-11f4f7374207" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

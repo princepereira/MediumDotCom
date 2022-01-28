@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Core dump analysis in Golang using Delve</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Core dump analysis in Golang using Delve</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+If there is a crash in Golang application, how will you debug ? Delve is the answer.
+</section>
+<section data-field="body" class="e-content">
+<section name="ae67" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="2060" id="2060" class="graf graf--h3 graf--leading graf--title">Core dump analysis in Go using Delve</h3><p name="4f91" id="4f91" class="graf graf--p graf-after--h3">If there is a crash in Golang application, how will you debug ? Delve is the answer.</p><p name="bbcc" id="bbcc" class="graf graf--p graf-after--p">Delve is a Golang debugging tool which can be used to debug core crashes, live golang applications etc.</p><p name="68d1" id="68d1" class="graf graf--p graf-after--p">Delve is supported from <strong class="markup--strong markup--p-strong">Go version 1.16+.</strong></p><p name="a9c8" id="a9c8" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">How to bring up Delve</strong></p><pre name="dad8" id="dad8" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Install Golang version &gt;= 1.16</strong></pre><pre name="1e6e" id="1e6e" class="graf graf--pre graf-after--pre">$ mkdir -p ~/Downloads &amp;&amp; cd ~/Downloads<br>$ wget <a href="https://golang.org/dl/go1.16.6.linux-amd64.tar.gz" data-href="https://golang.org/dl/go1.16.6.linux-amd64.tar.gz" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://golang.org/dl/go1.16.6.linux-amd64.tar.gz</a><br>$ sudo rm -rf /usr/local/go/<br>$ sudo tar -C /usr/local -xzf go1.16.6.linux-amd64.tar.gz<br>$ go version<br>go version go1.16.6 linux/amd64</pre><pre name="2d39" id="2d39" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Install Delve</strong></pre><pre name="24d8" id="24d8" class="graf graf--pre graf-after--pre">$ git clone <a href="https://github.com/go-delve/delve" data-href="https://github.com/go-delve/delve" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://github.com/go-delve/delve</a><br>$ cd delve<br>$ go install github.com/go-delve/delve/cmd/dlv<br>$ dlv version</pre><p name="fc0a" id="fc0a" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Enable application to generate core dump in the application running folder</strong>.<br>By default ulimit value will be set to 0. We have to increase it to allow applications to store core dumps.</p><pre name="0a59" id="0a59" class="graf graf--pre graf-after--p">$ ulimit -c                 // Checking the current ulimit value <br>0<br>$ ulimit -c unlimited       // Setting the ulimit value to unlimited</pre><p name="b06b" id="b06b" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Sample Source Code</strong></p><pre name="0ce5" id="0ce5" class="graf graf--pre graf-after--p">package main</pre><pre name="34fc" id="34fc" class="graf graf--pre graf-after--pre">import (<br> &quot;fmt&quot;<br>)</pre><pre name="b027" id="b027" class="graf graf--pre graf-after--pre">type A struct {<br> Name string<br>}</pre><pre name="3247" id="3247" class="graf graf--pre graf-after--pre">func (a *A) Greetings() {<br> fmt.Println(&quot;Hello : &quot;, a.Name)<br>}</pre><pre name="dae2" id="dae2" class="graf graf--pre graf-after--pre">func (a *A) DivideByZero() {<br> for i := 0; i &lt; 10; i++ {<br>  fmt.Println(&quot;Divide by 0 : &quot;, (100 / (7 - i)))<br> }<br>}</pre><pre name="f6de" id="f6de" class="graf graf--pre graf-after--pre">func sayGreetings(a *A) {<br> fmt.Println(&quot;sayGreetings called &quot;)<br> a.Greetings()<br>}</pre><pre name="cf85" id="cf85" class="graf graf--pre graf-after--pre">func divide(a *A) {<br> fmt.Println(&quot;divide called &quot;)<br> a.DivideByZero()<br>}</pre><pre name="2da2" id="2da2" class="graf graf--pre graf-after--pre">var a *A<br>var b *A</pre><pre name="e2a7" id="e2a7" class="graf graf--pre graf-after--pre">func main() {<br> fmt.Println(&quot;Main called...&quot;)<br> a = nil<br> b = new(A)<br> b.Name = &quot;Prince&quot;<br> fmt.Println(&quot;B : &quot;, b)<br> divide(a)         // Helps to make app crash by a local variable.<br> //sayGreetings(a) // Helps to make app crash by a package variable.<br>}</pre><p name="25bf" id="25bf" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Building the binary</strong></p><pre name="4d72" id="4d72" class="graf graf--pre graf-after--p">$ go mod init<br>$ go mod tidy</pre><pre name="d820" id="d820" class="graf graf--pre graf-after--pre"># Generates a binary. But while debugging, value of variables will not be clear due to compiler optimization.<br>$ go build -o binary</pre><pre name="7863" id="7863" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">OR</strong></pre><pre name="cd8b" id="cd8b" class="graf graf--pre graf-after--pre"># Generates a binary. But while debugging, value of variables will be clear due to compiler optimization disabled.<br>$ go build -gcflags=all=&quot;-N -l&quot; -o binary</pre><p name="0b9f" id="0b9f" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Run the program using GOTRACEBACK=crash</strong> and core dump will be generated in same folder.</p><pre name="9f6d" id="9f6d" class="graf graf--pre graf-after--p">$ GOTRACEBACK=crash ./binary<br>$ ls<br>binary  <strong class="markup--strong markup--pre-strong">core  </strong>go.mod  main.go</pre><p name="a5ec" id="a5ec" class="graf graf--p graf-after--pre">Will rename the core dump from “<strong class="markup--strong markup--p-strong">core</strong>” to “<strong class="markup--strong markup--p-strong">core-dump</strong>” just for readability purpose.</p><pre name="48d1" id="48d1" class="graf graf--pre graf-after--p">$ mv core core-dump<br>$ ls<br>binary  <strong class="markup--strong markup--pre-strong">core-dump  </strong>go.mod  main.go</pre><p name="eb56" id="eb56" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">How to debug using Delve ? </strong>Load the core dump to binary using <strong class="markup--strong markup--p-strong">dlv </strong>tool for analyzing.</p><pre name="6795" id="6795" class="graf graf--pre graf-after--p"># dlv  : is the command<br># core : is the option of delve to debug core dump<br># binary : is the binary built<br># core-dump : is the core dump generated after crash<br>$ dlv core ./binary core-dump<br># You will be entering delve command line.<br>(dlv)</pre><p name="9725" id="9725" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">What are the commands ?</strong></p><pre name="1a0a" id="1a0a" class="graf graf--pre graf-after--p"># Do a backtrace first to list the frames and see the final frame where the know source code is visible<br><strong class="markup--strong markup--pre-strong">(dlv) bt</strong>    // Backtrace: Prints the stacktrace</pre><pre name="2ab5" id="2ab5" class="graf graf--pre graf-after--pre">8  0x0000000000432325 in runtime.gopanic<br>    at /usr/local/go/src/runtime/panic.go:1065<br> 9  0x000000000043035b in runtime.panicdivide<br>    at /usr/local/go/src/runtime/panic.go:191<br><strong class="markup--strong markup--pre-strong">10  0x000000000049785a in main.(*A).DivideByZero<br>    at ./main.go:17</strong><br>11  0x0000000000497907 in main.divide<br>    at ./main.go:28<br>12  0x0000000000497a85 in main.main<br>    at ./main.go:40<br>13  0x0000000000434f76 in runtime.main<br>    at /usr/local/go/src/runtime/proc.go:225</pre><pre name="972b" id="972b" class="graf graf--pre graf-after--pre"># Left side numbers represents Frame numbers.<br># Pick the frame number of last known code and enter the frame.<br>(dlv) <strong class="markup--strong markup--pre-strong">frame 10</strong></pre><pre name="bb2f" id="bb2f" class="graf graf--pre graf-after--pre">Frame 10: ./main.go:17 (PC: 49785a)<br>    12:  fmt.Println(&quot;Hello : &quot;, a.Name)<br>    13: }<br>    14: <br>    15: func (a *A) DivideByZero() {<br>    16:  for i := 0; i &lt; 10; i++ {<br>=&gt;  17:   fmt.Println(&quot;Divide by 0 : &quot;, (100 / (7 - i)))<br>    18:  }<br>    19: }</pre><pre name="7e4d" id="7e4d" class="graf graf--pre graf-after--pre"># It will point out the point of crash.<br># Check the values of all local variables.<br>(dlv) <strong class="markup--strong markup--pre-strong">locals</strong><br>i = 7<br>(dlv)</pre><pre name="e0d3" id="e0d3" class="graf graf--pre graf-after--pre"># If want to check the value of specific local variable which caused crash.</pre><pre name="fe90" id="fe90" class="graf graf--pre graf-after--pre"># &#39;p&#39; means &#39;print&#39;<br>(dlv) <strong class="markup--strong markup--pre-strong">p i</strong><br>7<br>(dlv)</pre><pre name="a9b1" id="a9b1" class="graf graf--pre graf-after--pre"># If the reason for the crash is a package variable, you can dump package variables using &#39;vars&#39; command.<br>(dlv) vars &lt;Package name&gt;<br>(dlv) vars &lt;Package name&gt;.&lt;variable name&gt;</pre><pre name="0fb0" id="0fb0" class="graf graf--pre graf-after--pre">(dlv) <strong class="markup--strong markup--pre-strong">vars main</strong><br>runtime.main_init_done = chan bool 0/0<br>runtime.mainStarted = true<br>main.a = *main.A nil<br>main.b = (*main.A)(0xc000010250)<br>(dlv)</pre><pre name="1743" id="1743" class="graf graf--pre graf-after--pre">(dlv) <strong class="markup--strong markup--pre-strong">vars main.b</strong><br>main.b = (*main.A)(0xc000010250)<br>(dlv)</pre><pre name="05d9" id="05d9" class="graf graf--pre graf-after--pre">(dlv) <strong class="markup--strong markup--pre-strong">p main.b</strong><br>*main.A {Name: &quot;Prince&quot;}<br>(dlv)</pre><p name="c825" id="c825" class="graf graf--p graf-after--pre">How to generate core dump without crashing application ?</p><pre name="7fcc" id="7fcc" class="graf graf--pre graf-after--p graf--trailing">$ ./binary &amp;<br>$ sudo gcore 7024 # 546 is the 7024 of binary.<br>OR<br>$ sudo gcore $(pgrep binary) # This is to run the gcore command in a shell script</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/3c66e0a40e7f"><time class="dt-published" datetime="2021-08-10T12:48:52.382Z">August 10, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/core-dump-analysis-in-golang-using-delve-3c66e0a40e7f" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

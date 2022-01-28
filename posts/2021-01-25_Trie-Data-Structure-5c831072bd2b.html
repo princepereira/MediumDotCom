@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Trie Data Structure</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Trie Data Structure</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Use of Trie data structures in the real world applications
+</section>
+<section data-field="body" class="e-content">
+<section name="952f" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="5371" id="5371" class="graf graf--h3 graf--leading graf--title">Trie Data Structure</h3><figure name="4f68" id="4f68" class="graf graf--figure graf-after--h3"><img class="graf-image" data-image-id="1*IHCNU4UUn01TB7X_vkhNbg.png" data-width="1485" data-height="1051" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*IHCNU4UUn01TB7X_vkhNbg.png"></figure><h3 name="6c1b" id="6c1b" class="graf graf--h3 graf-after--figure"><strong class="markup--strong markup--h3-strong">Use of Trie data structures in the real world applications</strong></h3><ul class="postList"><li name="632a" id="632a" class="graf graf--li graf-after--h3"><strong class="markup--strong markup--li-strong">Auto-Complete feature<br></strong>- In web browsers to search history, provide suggestions in auto-completor boxes<br>- Email address completion with prefix<br>- Keyword suggestion in Source code editors</li><li name="88f0" id="88f0" class="graf graf--li graf-after--li"><strong class="markup--strong markup--li-strong">Spell Checkers/Auto Correction in Text Editors (Eg: Microsoft Word)</strong></li><li name="fe0a" id="fe0a" class="graf graf--li graf-after--li"><strong class="markup--strong markup--li-strong">Longest Prefix Matching algorithm for IP routing</strong></li><li name="62e8" id="62e8" class="graf graf--li graf-after--li"><strong class="markup--strong markup--li-strong">Browser History</strong></li></ul><h3 name="872e" id="872e" class="graf graf--h3 graf-after--li">How the Trie Node looks like</h3><figure name="1c17" id="1c17" class="graf graf--figure graf-after--h3"><img class="graf-image" data-image-id="1*4-AjZHj8iS2a9wmeYKZbnQ.png" data-width="388" data-height="155" src="https://cdn-images-1.medium.com/max/800/1*4-AjZHj8iS2a9wmeYKZbnQ.png"></figure><h3 name="ca8b" id="ca8b" class="graf graf--h3 graf-after--figure">Program</h3><pre name="95fc" id="95fc" class="graf graf--pre graf-after--h3">import java.util.*;</pre><pre name="a564" id="a564" class="graf graf--pre graf-after--pre">public class Trie{</pre><pre name="bc91" id="bc91" class="graf graf--pre graf-after--pre">private class TrieNode{</pre><pre name="cede" id="cede" class="graf graf--pre graf-after--pre">    Map&lt;Character, TrieNode&gt; child;<br>    boolean endOfWord;</pre><pre name="18d8" id="18d8" class="graf graf--pre graf-after--pre">    public TrieNode(){<br>      child = new HashMap&lt;&gt;();<br>      endOfWord = false;<br>    }<br>  }</pre><pre name="5ce8" id="5ce8" class="graf graf--pre graf-after--pre">  private final TrieNode root;</pre><pre name="324e" id="324e" class="graf graf--pre graf-after--pre">  public Trie(){<br>    root = new TrieNode();<br>  }</pre><pre name="f71c" id="f71c" class="graf graf--pre graf-after--pre">  public void insert(String word){<br>    insertRecursive(root, word, 0);<br>  }</pre><pre name="4072" id="4072" class="graf graf--pre graf-after--pre">  private void insertRecursive(TrieNode curNode, String word, int index){<br>    if (index == word.length()){<br>      curNode.endOfWord = true;<br>      return;<br>    }</pre><pre name="2ab8" id="2ab8" class="graf graf--pre graf-after--pre">    char ch = word.charAt(index);<br>    TrieNode node = curNode.child.get(ch);<br>    if (node == null){<br>      node = new TrieNode();<br>      curNode.child.put(ch, node);<br>    }<br>    insertRecursive(node, word, index+1);<br>  }</pre><pre name="711b" id="711b" class="graf graf--pre graf-after--pre">  public boolean search(String word){<br>    return searchRecursive(root, word, 0);<br>  }</pre><pre name="0719" id="0719" class="graf graf--pre graf-after--pre">  private boolean searchRecursive(TrieNode curNode, String word, int index){<br>    if (index == word.length()){<br>      return curNode.endOfWord;<br>    }<br>    char ch = word.charAt(index);<br>    TrieNode node = curNode.child.get(ch);<br>    if (node == null){<br>      return false;<br>    }<br>    return searchRecursive(node, word, index+1);<br>  }</pre><pre name="3d00" id="3d00" class="graf graf--pre graf-after--pre">  public void delete(String word){<br>   deleteRecursive(root, word, 0); <br>  }</pre><pre name="4084" id="4084" class="graf graf--pre graf-after--pre">  private boolean deleteRecursive(TrieNode curNode, String word, int index){<br>    if (index == word.length()){<br>      if (!curNode.endOfWord){<br>        return false;<br>      }<br>      curNode.endOfWord = false;<br>      return curNode.child.size() == 0;<br>    }</pre><pre name="ad4a" id="ad4a" class="graf graf--pre graf-after--pre">    char c = word.charAt(index);</pre><pre name="3f40" id="3f40" class="graf graf--pre graf-after--pre">    TrieNode node = curNode.child.get(c);</pre><pre name="9800" id="9800" class="graf graf--pre graf-after--pre">    if (node == null){<br>      return false;<br>    }</pre><pre name="fcd5" id="fcd5" class="graf graf--pre graf-after--pre">    boolean shouldDelCurNode = deleteRecursive(node, word, index+1);</pre><pre name="67c4" id="67c4" class="graf graf--pre graf-after--pre">    if (shouldDelCurNode){<br>      curNode.child.remove(c);<br>      return curNode.child.size() == 0;<br>    }</pre><pre name="4fda" id="4fda" class="graf graf--pre graf-after--pre">    return false;<br>  }</pre><pre name="3322" id="3322" class="graf graf--pre graf-after--pre">  public static void main(String[] args){<br>    Trie o = new Trie();<br>    o.insert(&quot;beautiful&quot;);<br>    o.insert(&quot;hello&quot;);<br>    o.insert(&quot;awesome&quot;);<br>    System.out.println(&quot;beautiful present &quot;+o.search(&quot;beautiful&quot;)); <br>    System.out.println(&quot;beautifull present &quot;+o.search(&quot;beautifull&quot;)); <br>    System.out.println(&quot;awesome present &quot;+o.search(&quot;awesome&quot;)); <br>    o.delete(&quot;awesome&quot;);<br>    System.out.println(&quot;After deleting awesome : &quot;+o.search(&quot;awesome&quot;));<br>  }</pre><pre name="4425" id="4425" class="graf graf--pre graf-after--pre">}</pre><p name="65e1" id="65e1" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output</strong></p><figure name="f0ff" id="f0ff" class="graf graf--figure graf-after--p graf--trailing"><img class="graf-image" data-image-id="1*Ml0vbYBH_0EFPOBl6_jV5A.png" data-width="519" data-height="118" src="https://cdn-images-1.medium.com/max/800/1*Ml0vbYBH_0EFPOBl6_jV5A.png"></figure></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/5c831072bd2b"><time class="dt-published" datetime="2021-01-25T09:22:08.606Z">January 25, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/trie-data-structure-5c831072bd2b" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Delve for debugging live Go application</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Delve for debugging live Go application</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Delve is a Golang debugging tool which can be used to debug core crashes, live golang applications etc.
+</section>
+<section data-field="body" class="e-content">
+<section name="7e29" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="1a97" id="1a97" class="graf graf--h3 graf--leading graf--title">Delve for debugging live Go application</h3><p name="bb21" id="bb21" class="graf graf--p graf-after--h3">Delve is a Golang debugging tool which can be used to debug core crashes, live golang applications etc.</p><p name="ed8e" id="ed8e" class="graf graf--p graf-after--p">Delve is supported from <strong class="markup--strong markup--p-strong">Go version 1.16+.</strong></p><p name="6453" id="6453" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">How to bring up Delve ?</strong></p><pre name="7d7b" id="7d7b" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Install Golang version &gt;= 1.16</strong>$ mkdir -p ~/Downloads &amp;&amp; cd ~/Downloads<br>$ wget <a href="https://golang.org/dl/go1.16.6.linux-amd64.tar.gz" data-href="https://golang.org/dl/go1.16.6.linux-amd64.tar.gz" class="markup--anchor markup--pre-anchor" rel="noopener nofollow noopener" target="_blank">https://golang.org/dl/go1.16.6.linux-amd64.tar.gz</a><br>$ sudo rm -rf /usr/local/go/<br>$ sudo tar -C /usr/local -xzf go1.16.6.linux-amd64.tar.gz<br>$ go version<br>go version go1.16.6 linux/amd64<strong class="markup--strong markup--pre-strong">Install Delve</strong>$ git clone <a href="https://github.com/go-delve/delve" data-href="https://github.com/go-delve/delve" class="markup--anchor markup--pre-anchor" rel="noopener nofollow noopener" target="_blank">https://github.com/go-delve/delve</a><br>$ cd delve<br>$ go install github.com/go-delve/delve/cmd/dlv<br>$ dlv version<br>Delve Debugger<br>Version: 1.7.0<br>Build: $Id: 03c66357c10892f8b93d05c77ad27c1f4dd0cb2b $</pre><p name="9be0" id="9be0" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Program source code</strong></p><pre name="d445" id="d445" class="graf graf--pre graf-after--p">package main</pre><pre name="7a9e" id="7a9e" class="graf graf--pre graf-after--pre">import (<br> &quot;fmt&quot;<br> &quot;time&quot;<br>)</pre><pre name="f8ec" id="f8ec" class="graf graf--pre graf-after--pre">func hello() {<br> for i := 0; i &lt; 100; i++ {<br>  fmt.Println(&quot;hello : &quot;, i)<br>  time.Sleep(5 * time.Second)<br> }<br>}</pre><pre name="a6bd" id="a6bd" class="graf graf--pre graf-after--pre">func hello2() {<br> for i := 0; i &lt; 100; i++ {<br>  fmt.Println(&quot;hello2 : &quot;, i)<br>  time.Sleep(5 * time.Second)<br> }<br>}</pre><pre name="b26d" id="b26d" class="graf graf--pre graf-after--pre">func main() {<br> fmt.Println(&quot;Main started...&quot;)<br> go hello()<br> hello2()<br> fmt.Println(&quot;Main ended...&quot;)<br>}</pre><p name="0c3d" id="0c3d" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Build and run the binary</strong></p><pre name="20cb" id="20cb" class="graf graf--pre graf-after--p"># Generates a binary. But while debugging, value of variables will be clear due to compiler optimization disabled.<br>$ go build -gcflags=all=&quot;-N -l&quot; -o binary</pre><pre name="2b6a" id="2b6a" class="graf graf--pre graf-after--pre"># Running the binary<br>$ ./binary &amp;<br>[1] 9904<br>$ Main started...<br>hello2 :  0<br>hello :  0</pre><p name="cc99" id="cc99" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Attach Delve to the running process.</strong></p><pre name="dc3c" id="dc3c" class="graf graf--pre graf-after--p">$ sudo su<br># echo &quot;0&quot; &gt; /proc/sys/kernel/yama/ptrace_scope<br># exit</pre><pre name="dd73" id="dd73" class="graf graf--pre graf-after--pre">$ pgrep &lt;binary name&gt;<br>$ dlv attach &lt;process id from prev command&gt;</pre><pre name="c0f5" id="c0f5" class="graf graf--pre graf-after--pre">$ <strong class="markup--strong markup--pre-strong">dlv attach $(pgrep binary)</strong><br>Type &#39;help&#39; for list of commands.<br>(dlv)</pre><pre name="b736" id="b736" class="graf graf--pre graf-after--pre"># Once you enter the dlv command line, process will be stalled till you enter &quot;c&quot; which means continue.</pre><pre name="6fac" id="6fac" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># Set the break point on file:line number first</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">b main.go:10</strong><br>Breakpoint 1 (enabled) set at 0x4b6ae7 for main.hello() ./main.go:10<br>(dlv)</pre><pre name="6721" id="6721" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># see the break points</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">bp</strong><br>Breakpoint runtime-fatal-throw (enabled) at 0x4390a0 for runtime.throw() /usr/local/go/src/runtime/panic.go:1107 (0)<br>Breakpoint unrecovered-panic (enabled) at 0x439320 for runtime.fatalpanic() /usr/local/go/src/runtime/panic.go:1190 (0)<br> print runtime.curg._panic.arg<br>Breakpoint 1 (enabled) at 0x4b6ae7 for main.hello() ./main.go:10 (0)<br>(dlv)</pre><pre name="45f3" id="45f3" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># Once all required breakpoints are set, continue with process execution.</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">c</strong><br>&gt; main.hello() ./main.go:10 (hits goroutine(6):1 total:1) (PC: 0x4b6ae7)<br>     5:  &quot;time&quot;<br>     6: )<br>     7: <br>     8: func hello() {<br>     9:  for i := 0; i &lt; 100; i++ {<br>=&gt;  10:   fmt.Println(&quot;hello : &quot;, i)<br>    11:   time.Sleep(5 * time.Second)<br>    12:  }<br>    13: }<br>    14: <br>    15: func hello2() {<br>(dlv)</pre><pre name="1181" id="1181" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># To move to the next line, use &quot;n&quot; which means next.</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">n</strong><br>&gt; main.hello() ./main.go:11 (PC: 0x4b6b94)<br>     6: )<br>     7: <br>     8: func hello() {<br>     9:  for i := 0; i &lt; 100; i++ {<br>    10:   fmt.Println(&quot;hello : &quot;, i)<br>=&gt;  11:   time.Sleep(5 * time.Second)<br>    12:  }<br>    13: }<br>    14: <br>    15: func hello2() {<br>    16:  for i := 0; i &lt; 100; i++ {<br>(dlv)</pre><pre name="bbac" id="bbac" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># To step in to the function, use &quot;s&quot; means step in.</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">s</strong><br>&gt; time.Sleep() /usr/local/go/src/runtime/time.go:176 (PC: 0x46bed3)<br>Warning: debugging optimized function<br>   171: <br>   172: // time.now is implemented in assembly.<br>   173: <br>   174: // timeSleep puts the current goroutine to sleep for at least ns nanoseconds.<br>   175: //go:linkname timeSleep time.Sleep<br>=&gt; 176: func timeSleep(ns int64) {<br>   177:  if ns &lt;= 0 {<br>   178:   return<br>   179:  }<br>   180: <br>   181:  gp := getg()<br>(dlv)</pre><pre name="6948" id="6948" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># To step out of the function, use &quot;so&quot; means step out.</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">so</strong><br>&gt; main.hello() ./main.go:11 (PC: 0x4b6ba7)<br>Values returned:</pre><pre name="b3b8" id="b3b8" class="graf graf--pre graf-after--pre">6: )<br>     7: <br>     8: func hello() {<br>     9:  for i := 0; i &lt; 100; i++ {<br>    10:   fmt.Println(&quot;hello : &quot;, i)<br>=&gt;  11:   time.Sleep(5 * time.Second)<br>    12:  }<br>    13: }<br>    14: <br>    15: func hello2() {<br>    16:  for i := 0; i &lt; 100; i++ {<br>(dlv)</pre><pre name="021f" id="021f" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># You can print the local variable and package variables like below</strong><br>(dlv) locals<br>i = 17<br>(dlv)<br>(dlv) vars main<br>runtime.main_init_done = chan bool 0/0<br>runtime.mainStarted = true<br>(dlv)</pre><pre name="b92c" id="b92c" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># You can also print all threads and enter the thread using thread id.</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">threads</strong><br>* Thread 10779 at 0x4b6ba7 ./main.go:11 main.hello<br>  Thread 10780 at 0x4704fd /usr/local/go/src/runtime/sys_linux_amd64.s:145 runtime.usleep<br>  Thread 10781 at 0x470d80 /usr/local/go/src/runtime/sys_linux_amd64.s:725 runtime.epollwait<br>  Thread 10782 at 0x470b63 /usr/local/go/src/runtime/sys_linux_amd64.s:580 runtime.futex<br>(dlv) <strong class="markup--strong markup--pre-strong">thread 10781</strong><br>Switched from 10779 to 10781<br>(dlv)</pre><pre name="5710" id="5710" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"># You can list goroutines and enter goroutine control like below.</strong><br>(dlv) <strong class="markup--strong markup--pre-strong">goroutines</strong><br>  Goroutine 1 - User: /usr/local/go/src/runtime/time.go:193 time.Sleep (0x46bf92) [sleep]<br>  Goroutine 2 - User: /usr/local/go/src/runtime/proc.go:337 runtime.gopark (0x43bdd5) [force gc (idle)]<br>  Goroutine 3 - User: /usr/local/go/src/runtime/proc.go:337 runtime.gopark (0x43bdd5) [GC sweep wait]<br>  Goroutine 4 - User: /usr/local/go/src/runtime/proc.go:337 runtime.gopark (0x43bdd5) [GC scavenge wait]<br>  Goroutine 5 - User: /usr/local/go/src/runtime/proc.go:337 runtime.gopark (0x43bdd5) [finalizer wait]<br>* Goroutine 6 - User: ./main.go:11 main.hello (0x4b6ba7) (thread 10779)<br>[6 goroutines]<br><br>(dlv) <strong class="markup--strong markup--pre-strong">goroutine 1</strong><br>Switched from 6 to 1 (thread 10779)<br>(dlv)</pre><pre name="24f0" id="24f0" class="graf graf--pre graf-after--pre graf--trailing"><strong class="markup--strong markup--pre-strong"># Exit delve util by &quot;exit&quot;/&quot;quit&quot;/&quot;q&quot; commands.</strong><br># You can exit delve util without killing application by &quot;n&quot; option<br>(dlv) exit<br>Would you like to kill the process? [Y/n] n</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/c4dec9522429"><time class="dt-published" datetime="2021-08-10T14:33:30.024Z">August 10, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/delve-for-debugging-live-go-application-c4dec9522429" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

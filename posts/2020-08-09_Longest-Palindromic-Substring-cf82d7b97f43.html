@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Longest Palindromic Substring</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Longest Palindromic Substring</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Find the longest palindromic substring from a long string.
+</section>
+<section data-field="body" class="e-content">
+<section name="6743" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="d283" id="d283" class="graf graf--h3 graf--leading graf--title">Longest Palindromic Substring</h3><p name="872c" id="872c" class="graf graf--p graf-after--h3">Find the longest palindromic substring from a long string.</p><ol class="postList"><li name="e8f4" id="e8f4" class="graf graf--li graf-after--p">Iterate from i := 1 to i := n-1 considering i^th value as the center of Palindromic substring.</li><li name="d755" id="d755" class="graf graf--li graf-after--li">Iterating from the ith value towards left and right, look for an even length palindromic substring.<br>Eg: abcddcaa<br>Longest palindromic substring is : cddc</li><li name="2b67" id="2b67" class="graf graf--li graf-after--li">Iterating from the ith value towards left and right, look for an even length palindromic substring.<br>Eg: xyxabcdcba<br>Longest palindromic substring is : abcdcba</li><li name="504f" id="504f" class="graf graf--li graf-after--li">After identifying each palindrome string, compare with previously identified value and replace.</li></ol><pre name="f704" id="f704" class="graf graf--pre graf-after--li">package main</pre><pre name="edbe" id="edbe" class="graf graf--pre graf-after--pre">import &quot;fmt&quot;</pre><pre name="45f7" id="45f7" class="graf graf--pre graf-after--pre">func main() {<br> str := &quot;abcxxyyxxdef&quot;<br> palindrome := &quot;&quot;<br> for i := 1; i &lt; len(str)-1; i++ {<br>  if tmpPalindrome := getPalindromicSubstr(str, i, true); tmpPalindrome != &quot;&quot; &amp;&amp; len(tmpPalindrome) &gt; len(palindrome) {<br>   palindrome = tmpPalindrome<br>  }<br>  if tmpPalindrome := getPalindromicSubstr(str, i, false); tmpPalindrome != &quot;&quot; &amp;&amp; len(tmpPalindrome) &gt; len(palindrome) {<br>   palindrome = tmpPalindrome<br>  }<br> }<br>  if palindrome == &quot;&quot;{<br>    palindrome = str[:1]<br>  }<br> fmt.Println(&quot;Longest palindromic substring : &quot;, palindrome)<br>}</pre><pre name="9dd9" id="9dd9" class="graf graf--pre graf-after--pre">func getPalindromicSubstr(str string, idx int, odd bool) string {<br> lenStr := len(str)<br> palindrome := &quot;&quot;</pre><pre name="ab3a" id="ab3a" class="graf graf--pre graf-after--pre">var i, j int<br> if odd {<br>  i = idx - 1<br>  j = idx + 1<br> } else {<br>  i = idx - 1<br>  j = idx<br> }</pre><pre name="0012" id="0012" class="graf graf--pre graf-after--pre">for i &gt;= 0 &amp;&amp; j &lt; lenStr {<br>  if tmp, ok := isPalindrome(str, i, j); ok {<br>   palindrome = tmp<br>   i--<br>   j++<br>  } else {<br>   return palindrome<br>  }<br> }</pre><pre name="293d" id="293d" class="graf graf--pre graf-after--pre">return palindrome<br>}</pre><pre name="1999" id="1999" class="graf graf--pre graf-after--pre">func isPalindrome(str string, idxStart, idxEnd int) (string, bool) {<br> subStr := str[idxStart : idxEnd+1]<br> lastIdx := len(subStr) - 1<br> for i := 0; i &lt; lastIdx/2 &amp;&amp; i &lt; (lastIdx-i); i++ {<br>  if subStr[i] != subStr[lastIdx-i] {<br>   return &quot;&quot;, false<br>  }<br> }<br> return subStr, true<br>}</pre><p name="2463" id="2463" class="graf graf--p graf-after--pre graf--trailing"><strong class="markup--strong markup--p-strong">Time Complexity : </strong>O(n2)<br><strong class="markup--strong markup--p-strong">Space Complexity :</strong> O(1)</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/cf82d7b97f43"><time class="dt-published" datetime="2020-08-09T08:44:58.146Z">August 9, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/longest-palindromic-substring-cf82d7b97f43" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

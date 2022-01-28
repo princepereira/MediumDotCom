@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>How to run trace in Golang</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">How to run trace in Golang</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Trace is a visual analyzer tool to identify heaps, go-routines, garbage collections, processors, threads, contentions in Golang based…
+</section>
+<section data-field="body" class="e-content">
+<section name="26c4" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="402e" id="402e" class="graf graf--h3 graf--leading graf--title">How to run trace in Golang</h3><p name="eacb" id="eacb" class="graf graf--p graf-after--h3"><strong class="markup--strong markup--p-strong">Trace</strong> is a visual analyzer tool to identify heaps, go-routines, garbage collections, processors, threads, contentions in Golang based applications.<br>It gives more information like pprof.</p><p name="4f6c" id="4f6c" class="graf graf--p graf-after--p">Sample code:</p><pre name="2ec1" id="2ec1" class="graf graf--pre graf-after--p">package main</pre><pre name="a345" id="a345" class="graf graf--pre graf-after--pre">import (<br>        &quot;image&quot;<br>        &quot;image/color&quot;<br>        &quot;image/png&quot;<br>        &quot;log&quot;<br>        &quot;os&quot;<br>        &quot;runtime/trace&quot;<br>        &quot;sync&quot;<br>)</pre><pre name="3990" id="3990" class="graf graf--pre graf-after--pre">const (<br>        output     = &quot;out.png&quot;<br>        width      = 2048<br>        height     = 2048<br>        numWorkers = 8<br>)</pre><pre name="6b02" id="6b02" class="graf graf--pre graf-after--pre">func main() {</pre><pre name="583a" id="583a" class="graf graf--pre graf-after--pre">        // ====== Trace =======<br>        file := &quot;file.trace&quot;<br>        f, _ := os.Create(file)<br>        defer f.Close()<br>        trace.Start(f)<br>        defer trace.Stop()</pre><pre name="25c4" id="25c4" class="graf graf--pre graf-after--pre">        imageFile, err := os.Create(output)<br>        if err != nil {<br>                log.Fatal(err)<br>        }</pre><pre name="66d8" id="66d8" class="graf graf--pre graf-after--pre">        img := createCol(width, height)</pre><pre name="8e96" id="8e96" class="graf graf--pre graf-after--pre">        if err = png.Encode(imageFile, img); err != nil {<br>                log.Fatal(err)<br>        }<br>}</pre><pre name="e9c5" id="e9c5" class="graf graf--pre graf-after--pre">// createCol creates one goroutine per column.<br>func createCol(width, height int) image.Image {<br>        m := image.NewGray(image.Rect(0, 0, width, height))<br>        var w sync.WaitGroup<br>        w.Add(width)<br>        for i := 0; i &lt; width; i++ {<br>                go func(i int) {<br>                        for j := 0; j &lt; height; j++ {<br>                                m.Set(i, j, pixel(i, j, width, height))<br>                        }<br>                        w.Done()<br>                }(i)<br>        }<br>        w.Wait()<br>        return m<br>}</pre><pre name="10e5" id="10e5" class="graf graf--pre graf-after--pre">// pixel returns the color of a Mandelbrot fractal at the given point.<br>func pixel(i, j, width, height int) color.Color {<br>        // Play with this constant to increase the complexity of the fractal.<br>        // In the justforfunc.com video this was set to 4.<br>        const complexity = 1024</pre><pre name="5957" id="5957" class="graf graf--pre graf-after--pre">        xi := norm(i, width, -1.0, 2)<br>        yi := norm(j, height, -1, 1)</pre><pre name="5f65" id="5f65" class="graf graf--pre graf-after--pre">        const maxI = 1000<br>        x, y := 0., 0.</pre><pre name="f774" id="f774" class="graf graf--pre graf-after--pre">        for i := 0; (x*x+y*y &lt; complexity) &amp;&amp; i &lt; maxI; i++ {<br>                x, y = x*x-y*y+xi, 2*x*y+yi<br>        }</pre><pre name="cc44" id="cc44" class="graf graf--pre graf-after--pre">        return color.Gray{uint8(x)}<br>}</pre><pre name="5990" id="5990" class="graf graf--pre graf-after--pre">func norm(x, total int, min, max float64) float64 {<br>        return (max-min)*float64(x)/float64(total) - max<br>}</pre><p name="efaf" id="efaf" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">How to execute ?</strong></p><pre name="b82b" id="b82b" class="graf graf--pre graf-after--p">$ go build -o binary<br>$ time ./binary &gt; file.trace<br>$ go tool trace file.trace # This will open a browser<br>$ go tool trace binary file.trace</pre><p name="3508" id="3508" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Shortcuts in the view trace of generated web page</strong></p><pre name="7af7" id="7af7" class="graf graf--pre graf-after--p">Press &#39;w&#39; : To expand <br>Press &#39;s&#39; : To shrink<br>Click &#39;?&#39; at the top right corner to get more options.</pre><p name="08cb" id="08cb" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">How the web page will look like</strong></p><figure name="240d" id="240d" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*szoBgEIvFLvWwBAa3WU_HA.png" data-width="1286" data-height="832" src="https://cdn-images-1.medium.com/max/800/1*szoBgEIvFLvWwBAa3WU_HA.png"></figure><p name="f285" id="f285" class="graf graf--p graf-after--figure">References:</p><div name="e235" id="e235" class="graf graf--mixtapeEmbed graf-after--p"><a href="https://blog.bullgare.com/2019/04/how-to-analyze-the-performance-of-your-go-application-in-production/" data-href="https://blog.bullgare.com/2019/04/how-to-analyze-the-performance-of-your-go-application-in-production/" class="markup--anchor markup--mixtapeEmbed-anchor" title="https://blog.bullgare.com/2019/04/how-to-analyze-the-performance-of-your-go-application-in-production/"><strong class="markup--strong markup--mixtapeEmbed-strong">How to analyze the performance of your go application in production</strong><br><em class="markup--em markup--mixtapeEmbed-em">You should definitely use chi&#39;s middleware for running pprof and stuff in your admin panel. That&#39;s the repo …</em>blog.bullgare.com</a><a href="https://blog.bullgare.com/2019/04/how-to-analyze-the-performance-of-your-go-application-in-production/" class="js-mixtapeImage mixtapeImage u-ignoreBlock" data-media-id="a4424eafadf3c5c07c58301f32cd9cd1" data-thumbnail-img-id="0*THZnomE-FPEK9oaQ" style="background-image: url(https://cdn-images-1.medium.com/fit/c/160/160/0*THZnomE-FPEK9oaQ);"></a></div><figure name="1e03" id="1e03" class="graf graf--figure graf--iframe graf-after--mixtapeEmbed"><iframe src="https://www.youtube.com/embed/ySy3sR1LFCQ?feature=oembed" width="700" height="393" frameborder="0" scrolling="no"></iframe></figure><p name="65d9" id="65d9" class="graf graf--p graf-after--figure graf--trailing"><a href="https://github.com/campoy/justforfunc/tree/master/22-perf" data-href="https://github.com/campoy/justforfunc/tree/master/22-perf" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/campoy/justforfunc/tree/master/22-perf</a></p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/59e18a325406"><time class="dt-published" datetime="2021-07-22T11:52:28.191Z">July 22, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/how-to-run-trace-in-golang-59e18a325406" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

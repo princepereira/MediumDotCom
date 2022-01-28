@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Tree Operations in Golang</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Tree Operations in Golang</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Tree operations [Insertion, Inorder, Postorder, Level order] Explained
+</section>
+<section data-field="body" class="e-content">
+<section name="221f" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="0b51" id="0b51" class="graf graf--h3 graf--leading graf--title">Tree Operations in Golang</h3><p name="fe5d" id="fe5d" class="graf graf--p graf-after--h3">Tree operations [Insertion, Inorder, Postorder, Level order] Explained</p><pre name="c9d7" id="c9d7" class="graf graf--pre graf-after--p">package main</pre><pre name="1ba0" id="1ba0" class="graf graf--pre graf-after--pre">import (<br> &quot;fmt&quot;<br>)</pre><pre name="585b" id="585b" class="graf graf--pre graf-after--pre">type Node struct {<br> Val   int<br> Left  *Node<br> Right *Node<br>}</pre><pre name="ef5b" id="ef5b" class="graf graf--pre graf-after--pre">func NewNode(val int) *Node {<br> node := &amp;Node{Val: val}<br> return node<br>}</pre><pre name="ec2e" id="ec2e" class="graf graf--pre graf-after--pre">func AddNode(head *Node, val int) *Node {<br> if head == nil {<br>  return NewNode(val)<br> }<br> tmp := head<br> for tmp != nil {<br>  if val &lt; tmp.Val {<br>   if tmp.Left == nil {<br>    tmp.Left = NewNode(val)<br>    return head<br>   } else {<br>    tmp = tmp.Left<br>   }<br>  } else {<br>   if tmp.Right == nil {<br>    tmp.Right = NewNode(val)<br>    return head<br>   } else {<br>    tmp = tmp.Right<br>   }<br>  }<br> }<br> return head<br>}</pre><pre name="a50a" id="a50a" class="graf graf--pre graf-after--pre">func CreateTree() (head *Node) {<br> head = AddNode(head, 50)<br> head = AddNode(head, 30)<br> head = AddNode(head, 70)<br> head = AddNode(head, 20)<br> head = AddNode(head, 40)<br> head = AddNode(head, 60)<br> head = AddNode(head, 80)<br> return head<br>}</pre><pre name="98be" id="98be" class="graf graf--pre graf-after--pre">func inorder(head *Node) {<br> if head == nil {<br>  return<br> }<br> inorder(head.Left)<br> fmt.Print(head.Val, &quot; &quot;)<br> inorder(head.Right)<br>}</pre><pre name="ed84" id="ed84" class="graf graf--pre graf-after--pre">func postorder(head *Node) {<br> if head == nil {<br>  return<br> }<br> postorder(head.Left)<br> postorder(head.Right)<br> fmt.Print(head.Val, &quot; &quot;)<br>}</pre><pre name="11e9" id="11e9" class="graf graf--pre graf-after--pre">func levelOrder(head *Node) {</pre><pre name="13cc" id="13cc" class="graf graf--pre graf-after--pre">q := make([]*Node, 0)<br> q = append(q, head)</pre><pre name="a129" id="a129" class="graf graf--pre graf-after--pre">for len(q) &gt; 0 {<br>  front := q[0]<br>  fmt.Print(front.Val, &quot; &quot;)<br>  if front.Left != nil {<br>   q = append(q, front.Left)<br>  }<br>  if front.Right != nil {<br>   q = append(q, front.Right)<br>  }<br>  q = q[1:]<br> }<br>}</pre><pre name="3658" id="3658" class="graf graf--pre graf-after--pre graf--trailing">func main() {<br> head := CreateTree()<br> fmt.Println(&quot;Inorder : &quot;)<br> inorder(head)<br> fmt.Println(&quot;\nPostorder : &quot;)<br> postorder(head)<br> fmt.Println(&quot;\nLevel Order : &quot;)<br> levelOrder(head)<br>}</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/ce041f1eebe3"><time class="dt-published" datetime="2022-01-21T03:39:26.889Z">January 21, 2022</time></a>.</p><p><a href="https://medium.com/@princepereira/tree-operations-in-golang-ce041f1eebe3" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Merge Sort Implementation</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Merge Sort Implementation</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+This is the java code for Merge Sort Implementation
+</section>
+<section data-field="body" class="e-content">
+<section name="8c8d" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="5e34" id="5e34" class="graf graf--h3 graf--leading graf--title">Merge Sort Implementation</h3><p name="5718" id="5718" class="graf graf--p graf-after--h3"><strong class="markup--strong markup--p-strong">This is the java code for Merge Sort Implementation</strong></p><pre name="efe7" id="efe7" class="graf graf--pre graf-after--p">import java.util.*;</pre><pre name="861b" id="861b" class="graf graf--pre graf-after--pre">public class MST {</pre><pre name="ee4e" id="ee4e" class="graf graf--pre graf-after--pre">public static void main(String[] args) {<br>    int[] arr = {34,23,12,65,78,56};<br>    MST m = new MST();<br>    m.sort(arr, 0, arr.length -1);<br>    System.out.println(&quot;&gt;&gt;&gt; : &quot;+Arrays.toString(arr));<br>  }</pre><pre name="a172" id="a172" class="graf graf--pre graf-after--pre">void sort(int[] arr , int l, int r){<br>    if (l &lt; r){<br>      int m = (r + l)/2;<br>      sort(arr, l, m);<br>      sort(arr, m+1, r);<br>      merge(arr, l, m, r);<br>    }<br>  }</pre><pre name="eab4" id="eab4" class="graf graf--pre graf-after--pre">void merge(int[] arr, int l, int m, int r){<br>    int n1 = m - l +1;<br>    int n2 = r - m;<br>    int[] L = new int[n1];<br>    int[] R = new int[n2];</pre><pre name="9a07" id="9a07" class="graf graf--pre graf-after--pre">   System.arraycopy(arr, l, L, 0, n1);<br>   System.arraycopy(arr, m+1, R, 0, n2);</pre><pre name="8824" id="8824" class="graf graf--pre graf-after--pre">   int i = 0 , j = 0;<br>   while(i &lt; n1 &amp;&amp; j &lt; n2){<br>      if(L[i] &lt;= R[j]){<br>        arr[l++] = L[i++];<br>      } else {<br>        arr[l++] = R[j++];<br>      }<br>   }</pre><pre name="a03f" id="a03f" class="graf graf--pre graf-after--pre">   while(i &lt; n1){<br>      arr[l++] = L[i++];<br>   }</pre><pre name="6a7f" id="6a7f" class="graf graf--pre graf-after--pre">   while(j &lt; n2){<br>      arr[l++] = R[j++];<br>   }<br>    <br>  }</pre><pre name="34f5" id="34f5" class="graf graf--pre graf-after--pre">}</pre><p name="587d" id="587d" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">This is the Golang implementation</strong></p><pre name="358a" id="358a" class="graf graf--pre graf-after--p">package main</pre><pre name="2fa7" id="2fa7" class="graf graf--pre graf-after--pre">import (<br>   &quot;fmt&quot;<br>)</pre><pre name="ed7a" id="ed7a" class="graf graf--pre graf-after--pre">func main() {<br>   arr := []int{56, 23, 12, 8, 34, 14}<br>   fmt.Println(&quot;Before : &quot;, arr)<br>   sort(arr)<br>   fmt.Println(&quot;After  : &quot;, arr)<br>}</pre><pre name="9168" id="9168" class="graf graf--pre graf-after--pre">func sort(arr []int) {<br>   if len(arr) &lt;= 1 {<br>       return<br>   }<br>   mergeSort(arr, 0, len(arr)-1)<br>}</pre><pre name="50c5" id="50c5" class="graf graf--pre graf-after--pre">func mergeSort(arr []int, l, r int) {<br>   if l &lt; r {<br>      m := (l + r) / 2<br>      mergeSort(arr, l, m)<br>      mergeSort(arr, m+1, r)<br>      merge(arr, l, m, r)<br>   }<br>}</pre><pre name="618a" id="618a" class="graf graf--pre graf-after--pre graf--trailing">func merge(arr []int, l, m, r int) {<br>   L := make([]int, m-l+1)<br>   R := make([]int, r-m)<br>   copy(L, arr[l:m+1])<br>   copy(R, arr[m+1:r+1])<br>   i, j := 0, 0<br>   for i &lt; len(L) &amp;&amp; j &lt; len(R) {<br>       if L[i] &lt; R[j] {<br>           arr[l] = L[i]<br>           i++<br>       } else {<br>           arr[l] = R[j]<br>           j++<br>       }<br>       l++<br>   }<br>   for i &lt; len(L) {<br>       arr[l] = L[i]<br>       i++<br>       l++<br>   }<br>   for j &lt; len(R) {<br>       arr[l] = R[j]<br>       j++<br>       l++<br>   }<br>}</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/82e0b4ab496"><time class="dt-published" datetime="2020-07-27T10:18:37.297Z">July 27, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/merge-sort-implementation-82e0b4ab496" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

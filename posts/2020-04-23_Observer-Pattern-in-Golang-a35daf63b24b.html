@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Observer Pattern in Golang</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Observer Pattern in Golang</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Observer Pattern is achieved mainly using 2 objects:
+</section>
+<section data-field="body" class="e-content">
+<section name="766e" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="b156" id="b156" class="graf graf--h3 graf--leading graf--title">Observer Pattern in Golang</h3><p name="ab7d" id="ab7d" class="graf graf--p graf-after--h3">Observer Pattern is achieved mainly using 2 objects:</p><p name="dc90" id="dc90" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Observable </strong>: The one who is being observed. He can perform 2 operations:</p><ul class="postList"><li name="d6a2" id="d6a2" class="graf graf--li graf-after--p">Adding observers to observer list <strong class="markup--strong markup--li-strong">[</strong><em class="markup--em markup--li-em">func (o *Observable) addObserver(obs Observer)</em><strong class="markup--strong markup--li-strong">]</strong>. The observers are maintained in a local list.</li><li name="53da" id="53da" class="graf graf--li graf-after--li">Notify all observers when any field value is changed <strong class="markup--strong markup--li-strong">[</strong><em class="markup--em markup--li-em">func (o *Observable) NotifyObservers(value string)</em><strong class="markup--strong markup--li-strong">]</strong></li></ul><p name="bc71" id="bc71" class="graf graf--p graf-after--li"><strong class="markup--strong markup--p-strong">Observer </strong>: One who keeps monitoring other’s activities. He will have a “Update(name string)” method which gets called once the Observable guy sends notification saying “<em class="markup--em markup--p-em">Hey I have a change in my value</em>”. [<em class="markup--em markup--p-em">func (o *Observer) Update(value string)</em>]</p><p name="f937" id="f937" class="graf graf--p graf-after--p">Here is how the code looks like:</p><p name="62bd" id="62bd" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">File:<em class="markup--em markup--p-em"> </em>observable.go</strong><em class="markup--em markup--p-em"><br></em><strong class="markup--strong markup--p-strong">Code</strong>:</p><pre name="b68e" id="b68e" class="graf graf--pre graf-after--p">package main</pre><pre name="7d08" id="7d08" class="graf graf--pre graf-after--pre">type Observable struct{<br> Observers []Observer<br>}</pre><pre name="a9d3" id="a9d3" class="graf graf--pre graf-after--pre">func (o *Observable) addObserver(obs Observer){<br> o.Observers = append(o.Observers, obs)<br>}</pre><pre name="41e2" id="41e2" class="graf graf--pre graf-after--pre">func (o *Observable) NotifyAll(value string){<br> for _, ob := range o.Observers {<br> ob.Update(value)<br> }<br>}</pre><p name="346a" id="346a" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">File: observer.go</strong><em class="markup--em markup--p-em"><br></em><strong class="markup--strong markup--p-strong">Code</strong>:</p><pre name="8c1c" id="8c1c" class="graf graf--pre graf-after--p">package main</pre><pre name="455a" id="455a" class="graf graf--pre graf-after--pre">import &quot;fmt&quot;</pre><pre name="b2d0" id="b2d0" class="graf graf--pre graf-after--pre">type Observer interface {<br> Update(value string)<br>}</pre><pre name="03a9" id="03a9" class="graf graf--pre graf-after--pre">func createCustomer(name string) *Customer{<br> return &amp;Customer{Name:name}<br>}</pre><pre name="e7d2" id="e7d2" class="graf graf--pre graf-after--pre">type Customer struct {<br> Name string<br>}</pre><pre name="b924" id="b924" class="graf graf--pre graf-after--pre">func (c *Customer) Update(value string){<br> fmt.Printf(“Customer : %s , New value: %s\n”,c.Name, value)<br>}</pre><p name="03b8" id="03b8" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">File: main.go</strong><em class="markup--em markup--p-em"><br></em><strong class="markup--strong markup--p-strong">Code</strong>:</p><pre name="9de0" id="9de0" class="graf graf--pre graf-after--p">package main</pre><pre name="77d3" id="77d3" class="graf graf--pre graf-after--pre">type Item struct{<br>  Observable<br>  Name        string<br>}</pre><pre name="3315" id="3315" class="graf graf--pre graf-after--pre">func createItem(name string) *Item{<br>  return &amp;Item{Name:name}<br>}</pre><pre name="ce26" id="ce26" class="graf graf--pre graf-after--pre">func (i *Item) setName(name string){<br>  i.Name = name<br>  i.NotifyAll(name)<br>}</pre><pre name="5348" id="5348" class="graf graf--pre graf-after--pre">func main(){<br>  i := createItem(&quot;Nike Shoes&quot;)<br>  c1 := createCustomer(&quot;Raj&quot;)<br>  c2 := createCustomer(&quot;Rohit&quot;)<br>  i.addObserver(c1)<br>  i.addObserver(c2)<br>  i.setName(&quot;Adidas&quot;)<br>}</pre><p name="b5ec" id="b5ec" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output</strong></p><pre name="b344" id="b344" class="graf graf--pre graf-after--p graf--trailing">$ go run main.go <br>Customer : Raj , New value: Adidas<br>Customer : Rohit , New value: Adidas</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/a35daf63b24b"><time class="dt-published" datetime="2020-04-23T13:36:13.375Z">April 23, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/observer-pattern-in-golang-a35daf63b24b" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

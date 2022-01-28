@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Install grpccurl in Ubuntu</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Install grpccurl in Ubuntu</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+grpcurl is a command-line tool that lets you interact with gRPC servers. It’s basically curl for gRPC servers.
+</section>
+<section data-field="body" class="e-content">
+<section name="c755" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="a93c" id="a93c" class="graf graf--h3 graf--leading graf--title">Install grpccurl in Ubuntu</h3><p name="07ba" id="07ba" class="graf graf--p graf-after--h3">grpcurl is a command-line tool that lets you interact with gRPC servers. It’s basically curl for gRPC servers.</p><p name="ac4b" id="ac4b" class="graf graf--p graf-after--p">The main purpose for this tool is to invoke RPC methods on a gRPC server from the command-line.</p><p name="cdb3" id="cdb3" class="graf graf--p graf-after--p">Ref: <a href="https://github.com/fullstorydev/grpcurl" data-href="https://github.com/fullstorydev/grpcurl" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/fullstorydev/grpcurl</a></p><p name="eb9c" id="eb9c" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Environment</strong>: Ubuntu 16.04, Server Edition</p><h3 name="a0ed" id="a0ed" class="graf graf--h3 graf-after--p">Install go</h3><pre name="970d" id="970d" class="graf graf--pre graf-after--h3">wget <a href="https://golang.org/dl/go1.14.6.linux-amd64.tar.gz" data-href="https://golang.org/dl/go1.14.6.linux-amd64.tar.gz" class="markup--anchor markup--pre-anchor" rel="noopener" target="_blank">https://golang.org/dl/go1.14.6.linux-amd64.tar.gz</a></pre><pre name="ad02" id="ad02" class="graf graf--pre graf-after--pre">sudo tar -C /usr/local -xzf go1.14.6.linux-amd64.tar.gz</pre><pre name="3c90" id="3c90" class="graf graf--pre graf-after--pre">mkdir -p $HOME/GoProjects/src -p $HOME/GoProjects/pkg -p $HOME/GoProjects/bin</pre><pre name="d1b1" id="d1b1" class="graf graf--pre graf-after--pre">echo &quot;export PATH=$PATH:/usr/local/go/bin:$HOME/GoProjects/bin&quot; &gt;&gt; $HOME/.bashrc</pre><pre name="28c5" id="28c5" class="graf graf--pre graf-after--pre">echo &quot;export GOPATH=$HOME/GoProjects&quot; &gt;&gt; $HOME/.bashrc &amp;&amp; source $HOME/.bashrc</pre><h3 name="676e" id="676e" class="graf graf--h3 graf-after--pre">Install grpccurl</h3><pre name="96ee" id="96ee" class="graf graf--pre graf-after--h3">go get github.com/fullstorydev/grpcurl/...</pre><pre name="7b95" id="7b95" class="graf graf--pre graf-after--pre">go install github.com/fullstorydev/grpcurl/cmd/grpcurl</pre><h3 name="7c8a" id="7c8a" class="graf graf--h3 graf-after--pre">How to use it</h3><pre name="53c0" id="53c0" class="graf graf--pre graf-after--h3">$ grpcurl -help</pre><pre name="3fdd" id="3fdd" class="graf graf--pre graf-after--pre">$ grpcurl grpc.server.com:443 my.custom.server.Service/Method<br><br># no TLS<br>$ grpcurl -plaintext grpc.server.com:80 my.custom.server.Service/Method</pre><pre name="e047" id="e047" class="graf graf--pre graf-after--pre">$ grpcurl -d &#39;{&quot;id&quot;: 1234, &quot;tags&quot;: [&quot;foo&quot;,&quot;bar&quot;]}&#39; \<br>    grpc.server.com:443 my.custom.server.Service/Method</pre><pre name="af71" id="af71" class="graf graf--pre graf-after--pre">$ grpcurl -d @ grpc.server.com:443 my.custom.server.Service/Method &lt;&lt;EOM<br>{<br>  &quot;id&quot;: 1234,<br>  &quot;tags&quot;: [<br>    &quot;foor&quot;,<br>    &quot;bar&quot;<br>  ]<br>}<br>EOM</pre><h3 name="a1e7" id="a1e7" class="graf graf--h3 graf-after--pre">Listing Services</h3><pre name="95b3" id="95b3" class="graf graf--pre graf-after--h3">$ # Server supports reflection<br>grpcurl localhost:8787 list<br><br># Using compiled protoset files<br>grpcurl -protoset my-protos.bin list<br><br># Using proto sources<br>grpcurl -import-path ../protos -proto my-stuff.proto list</pre><pre name="850d" id="850d" class="graf graf--pre graf-after--pre">The &quot;list&quot; verb also lets you see all methods in a particular service:<br>$ grpcurl localhost:8787 list my.custom.server.Service</pre><h3 name="c00a" id="c00a" class="graf graf--h3 graf-after--pre">Describing Elements</h3><pre name="82b3" id="82b3" class="graf graf--pre graf-after--h3 graf--trailing"># Server supports reflection<br>$ grpcurl localhost:8787 describe my.custom.server.Service.MethodOne<br><br># Using compiled protoset files<br>grpcurl -protoset my-protos.bin describe $ my.custom.server.Service.MethodOne<br><br># Using proto sources<br>$ grpcurl -import-path ../protos -proto my-stuff.proto describe my.custom.server.Service.MethodOne</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/6ad71fd3ed31"><time class="dt-published" datetime="2021-01-29T06:36:31.376Z">January 29, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/install-grpccurl-in-ubuntu-6ad71fd3ed31" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

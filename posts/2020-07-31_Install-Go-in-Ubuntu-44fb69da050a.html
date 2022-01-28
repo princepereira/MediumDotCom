@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Install Go in Ubuntu</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Install Go in Ubuntu</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Here I will explain how to install Go [Version: 1.14] in Ubuntu [Ubuntu 16.04] and run your first Go Project.
+</section>
+<section data-field="body" class="e-content">
+<section name="bf8a" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="679e" id="679e" class="graf graf--h3 graf--leading graf--title">Install Go in Ubuntu</h3><p name="94a1" id="94a1" class="graf graf--p graf-after--h3">Here I will explain how to install Go [Version: 1.14] in Ubuntu [Ubuntu 16.04] and run your first Go Project.</p><p name="5850" id="5850" class="graf graf--p graf-after--p">Download Go binary tarball to your Ubuntu machine [server/vm].</p><pre name="4243" id="4243" class="graf graf--pre graf-after--p">$ wget <a href="https://golang.org/dl/go1.14.6.linux-amd64.tar.gz" data-href="https://golang.org/dl/go1.14.6.linux-amd64.tar.gz" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://golang.org/dl/go1.14.6.linux-amd64.tar.gz</a></pre><p name="d856" id="d856" class="graf graf--p graf-after--pre">Untar the binary tarball to ‘/usr/local’ directory.</p><pre name="fde6" id="fde6" class="graf graf--pre graf-after--p">$ sudo tar -C /usr/local -xzf go1.14.6.linux-amd64.tar.gz</pre><p name="4197" id="4197" class="graf graf--p graf-after--pre">Set your Bin Path and GOPATH in .bashrc file and source the file.</p><pre name="557d" id="557d" class="graf graf--pre graf-after--p">$ mkdir -p $HOME/GoProjects/src -p $HOME/GoProjects/pkg -p $HOME/GoProjects/bin</pre><pre name="69ca" id="69ca" class="graf graf--pre graf-after--pre">$ echo &quot;export PATH=$PATH:/usr/local/go/bin:$HOME/GoProjects/bin&quot; &gt;&gt; $HOME/.bashrc</pre><pre name="0c4b" id="0c4b" class="graf graf--pre graf-after--pre">$ echo &quot;export GOPATH=$HOME/GoProjects&quot; &gt;&gt; $HOME/.bashrc &amp;&amp; source $HOME/.bashrc</pre><p name="fb25" id="fb25" class="graf graf--p graf-after--pre">Your Go setup is ready.</p><p name="312f" id="312f" class="graf graf--p graf-after--p">Create your first Go Project.</p><pre name="7d98" id="7d98" class="graf graf--pre graf-after--p">$ cd $HOME/src/GoProjects</pre><pre name="4d6d" id="4d6d" class="graf graf--pre graf-after--pre">$ mkdir SampleProject</pre><pre name="a92d" id="a92d" class="graf graf--pre graf-after--pre">$ cd SampleProject</pre><pre name="7315" id="7315" class="graf graf--pre graf-after--pre">$ vi main.go</pre><pre name="f769" id="f769" class="graf graf--pre graf-after--pre">//================Code starts here ==============//</pre><pre name="bcad" id="bcad" class="graf graf--pre graf-after--pre">package main</pre><pre name="3134" id="3134" class="graf graf--pre graf-after--pre">import &quot;fmt&quot;</pre><pre name="d37c" id="d37c" class="graf graf--pre graf-after--pre">func main(){<br>    fmt.Println(&quot;Hello World...&quot;)<br>}</pre><pre name="b4ce" id="b4ce" class="graf graf--pre graf-after--pre">//================Code ends here ==============//</pre><p name="ebd0" id="ebd0" class="graf graf--p graf-after--pre">Run your Go Project.</p><pre name="2bb5" id="2bb5" class="graf graf--pre graf-after--p">$ go run main.go</pre><pre name="1805" id="1805" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Output</strong> :</pre><pre name="5201" id="5201" class="graf graf--pre graf-after--pre">Hello World...</pre><pre name="3548" id="3548" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Or using</strong></pre><pre name="6ea0" id="6ea0" class="graf graf--pre graf-after--pre">$ go install .</pre><pre name="43a6" id="43a6" class="graf graf--pre graf-after--pre">$ cd ../bin</pre><pre name="c92a" id="c92a" class="graf graf--pre graf-after--pre">$ ./Sample</pre><pre name="8664" id="8664" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Output</strong> :</pre><pre name="0036" id="0036" class="graf graf--pre graf-after--pre">Hello World...</pre><p name="5cb7" id="5cb7" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Install VSCode in Ubuntu</strong></p><pre name="b956" id="b956" class="graf graf--pre graf-after--p">Download VS Code Binary. Link : <a href="https://go.microsoft.com/fwlink/?LinkID=760868" data-href="https://go.microsoft.com/fwlink/?LinkID=760868" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://go.microsoft.com/fwlink/?LinkID=760868</a></pre><pre name="78a9" id="78a9" class="graf graf--pre graf-after--pre">Move to Downloads directory in VM</pre><pre name="53aa" id="53aa" class="graf graf--pre graf-after--pre graf--trailing"><strong class="markup--strong markup--pre-strong">Install in VM</strong><br>$ sudo apt install ./code_1.63.2-1639562499_amd64.deb</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/44fb69da050a"><time class="dt-published" datetime="2020-07-31T06:43:39.137Z">July 31, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/install-go-in-ubuntu-44fb69da050a" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

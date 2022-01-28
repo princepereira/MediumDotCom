@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Find Smallest Difference of 2 Numbers from 2 Arrays</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Find Smallest Difference of 2 Numbers from 2 Arrays</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+This is an interview problem which is frequently asked in many interview questions.
+You will be provided with 2 unsorted arrays and…
+</section>
+<section data-field="body" class="e-content">
+<section name="3935" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="493a" id="493a" class="graf graf--h3 graf--leading graf--title">Find Smallest Difference of 2 Numbers from 2 Arrays</h3><p name="00c1" id="00c1" class="graf graf--p graf-after--h3">This is an interview problem which is frequently asked in many interview questions.<br>You will be provided with 2 unsorted arrays and requirement is to find the smallest possible difference between the element from first array and element from second array.</p><p name="9328" id="9328" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Steps:</strong></p><ol class="postList"><li name="ff1a" id="ff1a" class="graf graf--li graf-after--p">Arrays are :</li></ol><figure name="24f9" id="24f9" class="graf graf--figure graf-after--li"><img class="graf-image" data-image-id="1*7wYFoavOvYAfBMy9zxZWHg.jpeg" data-width="453" data-height="147" src="https://cdn-images-1.medium.com/max/800/1*7wYFoavOvYAfBMy9zxZWHg.jpeg"></figure><p name="dbfa" id="dbfa" class="graf graf--p graf-after--figure">2. Sort both the arrays</p><figure name="7b42" id="7b42" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*a-tOaJIEyXJ7_Jpn--uGHA.jpeg" data-width="443" data-height="136" src="https://cdn-images-1.medium.com/max/800/1*a-tOaJIEyXJ7_Jpn--uGHA.jpeg"></figure><p name="6d75" id="6d75" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">3</strong>. Keep an index pointers on both the arrays starting from ‘index = 0’.<br>Maintain 3 variables ‘elem1’, ‘elem2’ and ‘diff’.<br>In the beginning elem1 = arr1[0] , elem2 = arr2[0] and diff = abs(arr2[0] — arr1[0])</p><figure name="6e6d" id="6e6d" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*Qo8ztAevzTL1AGShiU4cYA.jpeg" data-width="446" data-height="254" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*Qo8ztAevzTL1AGShiU4cYA.jpeg"></figure><p name="38f1" id="38f1" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">4. Rules to follow:</strong><br> <strong class="markup--strong markup--p-strong">4.1</strong>. If the diff is ‘0’ then return because 0 is will be the most smallest difference.<br> <strong class="markup--strong markup--p-strong">4.2</strong>. If the newly calculated ‘diff’ is lesser than previous ‘diff’, replace the values of ‘elem1’, ‘elem2’ and ‘diff’ with current values.<br> <strong class="markup--strong markup--p-strong">4.3</strong>. If the arr1[i] &lt; arr2[j], <strong class="markup--strong markup--p-strong">do</strong> i++ <strong class="markup--strong markup--p-strong">else </strong>j++<br> <strong class="markup--strong markup--p-strong">4.4</strong>. Return the final elem1, elem2, diff value.</p><figure name="da02" id="da02" class="graf graf--figure graf-after--p"><img class="graf-image" data-image-id="1*Lz8Vrf0vOdjfpnb1tT6uSQ.jpeg" data-width="450" data-height="255" src="https://cdn-images-1.medium.com/max/800/1*Lz8Vrf0vOdjfpnb1tT6uSQ.jpeg"><figcaption class="imageCaption">Refer 4.3 [-9 &lt; -4, so i++]</figcaption></figure><figure name="7d0a" id="7d0a" class="graf graf--figure graf-after--figure"><img class="graf-image" data-image-id="1*Gj7cWH-LWOHsMIVFsrHCrA.jpeg" data-width="441" data-height="251" src="https://cdn-images-1.medium.com/max/800/1*Gj7cWH-LWOHsMIVFsrHCrA.jpeg"><figcaption class="imageCaption">Refer 4.3 [-8 &lt; -4, so i++]</figcaption></figure><figure name="fac0" id="fac0" class="graf graf--figure graf-after--figure"><img class="graf-image" data-image-id="1*5HwVmIL6Ij_p0lVpSudYLQ.jpeg" data-width="446" data-height="253" src="https://cdn-images-1.medium.com/max/800/1*5HwVmIL6Ij_p0lVpSudYLQ.jpeg"><figcaption class="imageCaption">Refer 4.3 [-4 &lt; 3, so j++]</figcaption></figure><p name="87c6" id="87c6" class="graf graf--p graf-after--figure"><strong class="markup--strong markup--p-strong">Code :</strong></p><p name="97c6" id="97c6" class="graf graf--p graf-after--p">File : SmallestDiff.java</p><pre name="c5d3" id="c5d3" class="graf graf--pre graf-after--p">import java.util.*;<br>import java.lang.Math;</pre><pre name="4b1d" id="4b1d" class="graf graf--pre graf-after--pre">public class SmallestDiff {</pre><pre name="4494" id="4494" class="graf graf--pre graf-after--pre">  public static void main(String[] args){<br>    int[] arr1 = {23, 45, 12, 3, 4, -8, -9};<br>    int[] arr2 = {13, 5, 7, 63, -4};<br>    int[] arr = smallestDiff(arr1, arr2);<br>    System.out.println(Arrays.toString(arr));<br>  }</pre><pre name="634f" id="634f" class="graf graf--pre graf-after--pre">  static int[] smallestDiff(int[] arr1, int[] arr2){<br>    Arrays.sort(arr1);<br>    Arrays.sort(arr2);<br>    int[] result = new int[3];<br>    int elem1 = arr1[0], elem2 = arr2[0], diff = Math.abs(elem2 - elem1);<br>    int i = 0, j = 0;<br>    while(i &lt; arr1.length &amp;&amp; j &lt; arr2.length){<br>      int tmpDiff = Math.abs(arr1[i] - arr2[j]);<br>      if (tmpDiff == 0) {<br>        result[0] = arr1[i]; result[1] = arr2[j]; result[2] = 0;<br>        return result;<br>      } else if (tmpDiff &lt; diff){<br>        elem1 = arr1[i]; elem2 = arr2[j]; diff = tmpDiff;<br>      }<br>      if (arr1[i] &lt; arr2[j]) {<br>        i++;<br>      } else {<br>        j++;<br>      }<br>    }<br>    result[0] = elem1; result[1] = elem2; result[2] = diff;<br>    return result;<br>  }<br>}</pre><p name="07b1" id="07b1" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output:</strong></p><pre name="115e" id="115e" class="graf graf--pre graf-after--p">[4, 5, 1]</pre><p name="63be" id="63be" class="graf graf--p graf-after--pre graf--trailing"><strong class="markup--strong markup--p-strong">Time Complexity :</strong> O(nlogn + mlogm) <br>[where ’n’ is the length of first array and ‘m’ is the length of second array. And ‘nlogn’ is the time taking for sorting arr1 and ‘mlogm’ is the time taking for sorting arr2.]<br><strong class="markup--strong markup--p-strong">Space Complexity :</strong> O(1)</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/e06b872b7123"><time class="dt-published" datetime="2020-08-05T05:09:08.424Z">August 5, 2020</time></a>.</p><p><a href="https://medium.com/@princepereira/find-smallest-difference-of-2-numbers-from-2-arrays-e06b872b7123" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

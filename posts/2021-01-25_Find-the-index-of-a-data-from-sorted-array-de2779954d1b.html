@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Find the index of a data from sorted array</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Find the index of a data from sorted array</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+This clearly explains how we can find the index of a data from a sorted array in most fastest way O(log n).
+</section>
+<section data-field="body" class="e-content">
+<section name="4303" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="0579" id="0579" class="graf graf--h3 graf--leading graf--title">Find the index of an element from sorted array</h3><p name="4418" id="4418" class="graf graf--p graf-after--h3">This clearly explains how we can find the index of a data from a sorted array in most fastest way O(log n).</p><p name="e303" id="e303" class="graf graf--p graf-after--p">Eg: Take a sample array : [-2, 3, 5, 8, 10, 13, 17, 19]</p><ol class="postList"><li name="6fbc" id="6fbc" class="graf graf--li graf-after--p">Define left boundary index, right boundary index and middle index to narrow down the search. <br>left = 0<br>right = len(arr) -1 = 7,<br>middle = (left+right)/2 = 3</li><li name="7845" id="7845" class="graf graf--li graf-after--li">Check the value = array[middle]<br>If yes return the index</li><li name="83b3" id="83b3" class="graf graf--li graf-after--li">Check the value &lt; array[middle]<br>If yes, then we have to narrow down the search between left and middle.<br>So right = (middle-1) and middle = (left+right)/2</li><li name="4bee" id="4bee" class="graf graf--li graf-after--li">If the value &gt;array[middle]<br>Then we have to narrow down the search between middle and right.<br>So left = (middle+1) and middle = (left+right)/2</li><li name="ccd0" id="ccd0" class="graf graf--li graf-after--li">Continue the process till you find the element or the condition (left&lt;middle&lt;right) is broken.<br>If the element is found, return index, if not found return -1 because -1 can never be a valid index of an array.</li></ol><h3 name="7cff" id="7cff" class="graf graf--h3 graf-after--li">Program</h3><pre name="b105" id="b105" class="graf graf--pre graf-after--h3">import java.util.*;</pre><pre name="1c07" id="1c07" class="graf graf--pre graf-after--pre">public class FindIdx{</pre><pre name="a6ca" id="a6ca" class="graf graf--pre graf-after--pre">  public static void main(String[] args){<br>    int[] arr = {-2, 3, 5, 8, 10, 13, 17, 19};<br>    FindIdx o = new FindIdx();<br>    System.out.println(&quot;Array : &quot;+Arrays.toString(arr));<br>    System.out.println(&quot;Index of 10 : &quot;+o.findIdx(arr, 10));<br>    System.out.println(&quot;Index of 19 : &quot;+o.findIdx(arr, 19));<br>    System.out.println(&quot;Index of 14 : &quot;+o.findIdx(arr, 14));<br>  }</pre><pre name="d100" id="d100" class="graf graf--pre graf-after--pre">  public int findIdx(int[] arr, int val){<br>    int l = 0;<br>    int r = arr.length -1;<br>    int m = (l+r)/2;<br>    return findIdx(arr, val, l, m, r);<br>  }</pre><pre name="704d" id="704d" class="graf graf--pre graf-after--pre">  private int findIdx(int[] arr, int val, int l, int m, int r){<br>    if (l &gt; m || m &gt; r) {<br>      return -1;<br>    }<br>    if (arr[m] == val){<br>      return m;<br>    }<br>    if (arr[m] &gt; val) {<br>      r = m-1;<br>    } else {<br>      l = m+1;<br>    }</pre><pre name="f2a1" id="f2a1" class="graf graf--pre graf-after--pre">    m = (l+r)/2;<br>    return findIdx(arr, val, l, m, r);<br>  }</pre><pre name="cd14" id="cd14" class="graf graf--pre graf-after--pre">}</pre><p name="637b" id="637b" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Output:</strong></p><figure name="cde2" id="cde2" class="graf graf--figure graf-after--p graf--trailing"><img class="graf-image" data-image-id="1*XVnqPvr1uO_dt1anrAGFXw.png" data-width="620" data-height="108" src="https://cdn-images-1.medium.com/max/800/1*XVnqPvr1uO_dt1anrAGFXw.png"></figure></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/de2779954d1b"><time class="dt-published" datetime="2021-01-25T17:20:34.387Z">January 25, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/find-the-index-of-a-data-from-sorted-array-de2779954d1b" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

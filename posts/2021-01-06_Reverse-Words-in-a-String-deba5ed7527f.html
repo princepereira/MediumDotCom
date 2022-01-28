@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Reverse Words in a String</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Reverse Words in a String</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Given an input string s, reverse the order of the words.
+</section>
+<section data-field="body" class="e-content">
+<section name="72f4" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="7c0d" id="7c0d" class="graf graf--h3 graf--leading graf--title">Reverse Words in a String</h3><p name="cbd6" id="cbd6" class="graf graf--p graf-after--h3">Given an input string <code class="markup--code markup--p-code">s</code>, reverse the order of the <strong class="markup--strong markup--p-strong">words</strong>.</p><p name="3d47" id="3d47" class="graf graf--p graf-after--p">A <strong class="markup--strong markup--p-strong">word</strong> is defined as a sequence of non-space characters. The <strong class="markup--strong markup--p-strong">words</strong> in <code class="markup--code markup--p-code">s</code> will be separated by at least one space.</p><p name="225b" id="225b" class="graf graf--p graf-after--p">Return <em class="markup--em markup--p-em">a string of the words in reverse order concatenated by a single space.</em></p><p name="9c29" id="9c29" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Note</strong> that <code class="markup--code markup--p-code">s</code> may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.</p><p name="365e" id="365e" class="graf graf--p graf-after--p">Eg:1</p><pre name="a57f" id="a57f" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Input:</strong> s = &quot; the sky is blue &quot;<br><strong class="markup--strong markup--pre-strong">Output:</strong> &quot;blue is sky the&quot;</pre><p name="5137" id="5137" class="graf graf--p graf-after--pre">Program</p><pre name="052f" id="052f" class="graf graf--pre graf-after--p">import java.util.*;</pre><pre name="edeb" id="edeb" class="graf graf--pre graf-after--pre">public class ReverseWord {</pre><pre name="a714" id="a714" class="graf graf--pre graf-after--pre">public static void main(String[] args){<br>    String str = &quot;  World is beautiful  &quot;;<br>    System.out.println(&quot;Before Reverse : &#39;&quot; + str + &quot;&#39;&quot;);<br>    char[] a = str.toCharArray();<br>    reverse(a, 0, a.length -1);<br>    reverseWords(a, a.length -1);<br>    str = cleanSpaces(a);<br>    System.out.println(&quot;After Reverse  : &#39;&quot; + str + &quot;&#39;&quot;);<br>  }</pre><pre name="14e5" id="14e5" class="graf graf--pre graf-after--pre">  // reverse the entire letters of a sentence<br>  // This will make &quot;hello world&quot; to &quot;dlrow olleh&quot;<br>  static void reverse(char[] a, int i, int j){<br>    while(i &lt; j){<br>      char t = a[i];<br>      a[i++] = a[j];<br>      a[j--] = t;<br>    }<br>  }</pre><pre name="d509" id="d509" class="graf graf--pre graf-after--pre">  // reverse the letters of reversed words<br>  // This makes &quot;dlrow olleh&quot; to &quot;world hello&quot;<br>  static void reverseWords(char[] a, int n){<br>    int i = 0, j = 0;<br>    while(i &lt; n &amp;&amp; j &lt; n){<br>      while(i &lt; n &amp;&amp; a[i] == &#39; &#39;) i++;<br>      j = i;<br>      while(j &lt;= n &amp;&amp; a[j] != &#39; &#39;) j++;<br>      reverse(a, i, j-1);<br>      i = j +1;<br>    }<br>  }</pre><pre name="2ff6" id="2ff6" class="graf graf--pre graf-after--pre">  // This removes the leading and trailing spaces by<br>  // - finding i where the real letter starts (earlier parts will be spaces)<br>  // - finding j where the real letter ends (rest part will be spaces)<br>  // - make a string from the array starting with i and ending with j<br>  static String cleanSpaces(char[] a) {<br>    int i = 0;<br>    int j = a.length - 1;<br>    while(i &lt; j){<br>      if (a[i] == &#39; &#39;) i++;<br>      if (a[j] == &#39; &#39;) j--;<br>      if (a[i] != &#39; &#39; &amp;&amp; a[j] != &#39; &#39;) break;<br>    }<br>    if (i &gt;= j){<br>      return &quot;&quot;;<br>    }<br>    StringBuffer sb = new StringBuffer();<br>    while(i &lt;= j){<br>      sb.append(a[i++]);<br>    }<br>    return sb.toString();<br>  }</pre><pre name="5a07" id="5a07" class="graf graf--pre graf-after--pre">}</pre><p name="3f03" id="3f03" class="graf graf--p graf-after--pre">Output</p><pre name="859f" id="859f" class="graf graf--pre graf-after--p graf--trailing">Before Reverse : &#39;  World is beautiful  &#39;<br>After Reverse  : &#39;beautiful is World&#39;</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/deba5ed7527f"><time class="dt-published" datetime="2021-01-06T06:49:05.664Z">January 6, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/reverse-words-in-a-string-deba5ed7527f" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>

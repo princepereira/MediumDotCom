@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Deploy Kubernetes in Ubuntu 18.04 (Bionic Beaver)</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Deploy Kubernetes in Ubuntu 18.04 (Bionic Beaver)</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Prerequisites: 
+Oracle Virtual Box VM
+2 CPU, 4 GB RAM, 40 GB HD
+Ubuntu 18.04
+Network Interface: Bridge Adapter Mode
+</section>
+<section data-field="body" class="e-content">
+<section name="cd8f" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="07f5" id="07f5" class="graf graf--h3 graf--leading graf--title">Deploy Kubernetes in Ubuntu 18.04 (Bionic Beaver)</h3><p name="b2e2" id="b2e2" class="graf graf--p graf-after--h3"><strong class="markup--strong markup--p-strong">Prerequisites</strong>: <br>Oracle Virtual Box VM<br>2 CPU, 4 GB RAM, 40 GB HD<br><a href="https://releases.ubuntu.com/18.04/ubuntu-18.04.6-live-server-amd64.iso" data-href="https://releases.ubuntu.com/18.04/ubuntu-18.04.6-live-server-amd64.iso" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">Ubuntu 18.04</a><br>Network Interface: Bridge Adapter Mode &amp; Host only Adapter</p><p name="dfd5" id="dfd5" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Install Packages:</strong></p><p name="a2dd" id="a2dd" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Setup Docker</strong></p><pre name="716e" id="716e" class="graf graf--pre graf-after--p">$ sudo apt-get update<br>$ sudo apt-get install -y docker.io curl<br>$ sudo systemctl enable docker<br>$ sudo systemctl start docker <br>$ sudo groupadd docker <br>$ sudo usermod -aG docker $USER<br>$ sudo docker info<br>$ sudo sysctl net.bridge.bridge-nf-call-iptables=1</pre><p name="0bdc" id="0bdc" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Make sure Cgroup driver points to “systemd” and not to “Cgroupfs”</strong></p><pre name="ebac" id="ebac" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">How to check Cgroup driver points to “systemd”</strong></pre><pre name="87e6" id="87e6" class="graf graf--pre graf-after--pre">$ sudo docker info | grep Cgroup</pre><pre name="8f7f" id="8f7f" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">How to change Cgroup driver to &quot;systemd&quot;</strong></pre><pre name="db2e" id="db2e" class="graf graf--pre graf-after--pre">$ sudo systemctl status docker<br><strong class="markup--strong markup--pre-strong">Check following section</strong> <br>Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)</pre><pre name="994e" id="994e" class="graf graf--pre graf-after--pre">$ sudo vi /lib/systemd/system/docker.service<br><strong class="markup--strong markup--pre-strong">Replace this line:</strong><br>ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock</pre><pre name="2d1c" id="2d1c" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">by:</strong></pre><pre name="4d45" id="4d45" class="graf graf--pre graf-after--pre">ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock <strong class="markup--strong markup--pre-strong">--exec-opt native.cgroupdriver=systemd</strong></pre><pre name="9394" id="9394" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Restart the Docker service by running the following command:</strong></pre><pre name="b84b" id="b84b" class="graf graf--pre graf-after--pre">$ sudo systemctl daemon-reload<br>$ sudo systemctl restart docker</pre><pre name="2873" id="2873" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Verify the cgroups driver to systemd</strong></pre><pre name="fd8b" id="fd8b" class="graf graf--pre graf-after--pre">$ sudo docker info | grep Cgroup</pre><p name="70d7" id="70d7" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Setup Kubernetes Packages</strong></p><pre name="67d9" id="67d9" class="graf graf--pre graf-after--p">$ curl -s <a href="https://packages.cloud.google.com/apt/doc/apt-key.gpg" data-href="https://packages.cloud.google.com/apt/doc/apt-key.gpg" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://packages.cloud.google.com/apt/doc/apt-key.gpg</a> | sudo apt-key add<br>$ sudo apt-add-repository &quot;deb <a href="http://apt.kubernetes.io/" data-href="http://apt.kubernetes.io/" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">http://apt.kubernetes.io/</a> kubernetes-xenial main&quot;<br>$ sudo apt-get update<br>$ sudo apt-get install -y kubeadm kubelet kubectl<br>$ sudo apt-mark hold kubeadm kubelet kubectl<br>$ kubeadm version<br>$ sudo swapoff -a</pre><p name="c59e" id="c59e" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Initialize Kubernetes on Master Node</strong></p><pre name="1423" id="1423" class="graf graf--pre graf-after--p">$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16<br>$ mkdir -p $HOME/.kube<br>$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config<br>$ sudo chown $(id -u):$(id -g) $HOME/.kube/config</pre><p name="52f0" id="52f0" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Bring up Pod Networking </strong>(Flannel CNI is used here)</p><pre name="6a3a" id="6a3a" class="graf graf--pre graf-after--p">$ sudo kubectl apply -f <a href="https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml" data-href="https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</a></pre><pre name="ee1e" id="ee1e" class="graf graf--pre graf-after--pre">$ kubectl get pods --all-namespaces<br>$ kubectl get nodes</pre><pre name="e7b8" id="e7b8" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Following command will enable master node also to bring up the pods</strong></pre><pre name="8518" id="8518" class="graf graf--pre graf-after--pre">$ kubectl taint nodes --all node-role.kubernetes.io/master-</pre><p name="6042" id="6042" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Create a deployment and test</strong></p><pre name="3b37" id="3b37" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Create deployment.yaml</strong></pre><pre name="6bb7" id="6bb7" class="graf graf--pre graf-after--pre">$ vi ngin-deployment.yaml</pre><pre name="3760" id="3760" class="graf graf--pre graf-after--pre">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: nginx-deployment<br>  labels:<br>    app: nginx<br>spec:<br>  replicas: 3<br>  selector:<br>    matchLabels:<br>      app: nginx<br>  template:<br>    metadata:<br>      labels:<br>        app: nginx<br>    spec:<br>      containers:<br>      - name: nginx<br>        image: nginx:1.14.2<br>        ports:<br>        - containerPort: 80</pre><pre name="ed59" id="ed59" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Create deployment</strong></pre><pre name="0af8" id="0af8" class="graf graf--pre graf-after--pre">$ kubectl create -f ngin-deployment.yaml</pre><pre name="4684" id="4684" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"><em class="markup--em markup--pre-em">Deployment can be alternatively created using this command. </em></strong></pre><pre name="99f6" id="99f6" class="graf graf--pre graf-after--pre"><em class="markup--em markup--pre-em">$ kubectl create deployment nginx-dep --image=nginx:1.14.2 </em></pre><pre name="80f3" id="80f3" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong"><em class="markup--em markup--pre-em">Later we can use following command to edit and update it</em></strong></pre><pre name="f971" id="f971" class="graf graf--pre graf-after--pre"><em class="markup--em markup--pre-em">$ kubectl get deployment nginx-dep -o yaml &gt; dep.yaml</em></pre><pre name="686d" id="686d" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Check pods</strong></pre><pre name="a863" id="a863" class="graf graf--pre graf-after--pre">$ kubectl get pods</pre><pre name="fd78" id="fd78" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Check deployment</strong></pre><pre name="26a0" id="26a0" class="graf graf--pre graf-after--pre">$ kubectl get deployments</pre><pre name="ca4b" id="ca4b" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Check replicasets</strong></pre><pre name="efd9" id="efd9" class="graf graf--pre graf-after--pre">$ kubectl get replicasets</pre><p name="a134" id="a134" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Create a service and access from browser</strong></p><pre name="a5ec" id="a5ec" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Create service</strong></pre><pre name="597d" id="597d" class="graf graf--pre graf-after--pre">$ kubectl expose deployment nginx-deployment --type=LoadBalancer<br>--name=nginx-web-server</pre><pre name="d4dd" id="d4dd" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Check created services</strong></pre><pre name="3c4f" id="3c4f" class="graf graf--pre graf-after--pre">$ kubectl get services</pre><pre name="24b2" id="24b2" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">Use the &lt;vm ip&gt;:&lt;node port&gt; from above command to access nginx service from the host machine browser.</strong></pre><p name="92ec" id="92ec" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">Troubleshooting Guide</strong></p><pre name="f0d7" id="f0d7" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">Reset the kubeadm</strong></pre><pre name="e529" id="e529" class="graf graf--pre graf-after--pre">$ sudo kubeadm reset<br>$ sudo rm -rf /var/lib/kubelet/pki<br>$ sudo swapoff -a<br>$ sudo sysctl net.bridge.bridge-nf-call-iptables=1<br>$ sudo rm -rf $HOME/.kube/config</pre><pre name="5c4f" id="5c4f" class="graf graf--pre graf-after--pre"><strong class="markup--strong markup--pre-strong">To update the hostname</strong></pre><pre name="1c88" id="1c88" class="graf graf--pre graf-after--pre">sudo vi /etc/hosts<br>127.0.1.1 &lt;old hostname&gt; &lt;new hostname&gt;</pre><pre name="9ba3" id="9ba3" class="graf graf--pre graf-after--pre graf--trailing">sudo hostnamectl set-hostname &lt;new hostname&gt;<br>Exit the vm and ssh again</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@princepereira" class="p-author h-card">Prince Pereira</a> on <a href="https://medium.com/p/a8d70f4913bb"><time class="dt-published" datetime="2021-10-19T13:09:05.362Z">October 19, 2021</time></a>.</p><p><a href="https://medium.com/@princepereira/deploy-kubernetes-in-ubuntu-18-04-bionic-beaver-a8d70f4913bb" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on January 28, 2022.</p></footer></article></body></html>
